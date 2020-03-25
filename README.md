@@ -10,7 +10,7 @@ gestión de recogidas de elementos sanitarios realizados por voluntarios.
 Navegadores web soportados
 
 ```
-Da un ejemplo
+
 ```
 
 ### Utilización 🔧
