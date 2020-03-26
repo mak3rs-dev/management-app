@@ -1,11 +1,12 @@
 {
   "name": "mak3rs-management-app",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "mak3rs-dev",
+  "homepage": "https://mak3rs.tk/",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --configuration=staging",
+    "start:local": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
