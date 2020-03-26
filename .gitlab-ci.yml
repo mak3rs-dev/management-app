@@ -1,0 +1,47 @@
+image: marcomaisel/ionic:latest
+
+cache:
+  paths:
+    - node_modules/
+    - platforms/
+    - plugins/
+
+deploy_beta:
+  stage: deploy
+  environment: Beta
+  only:
+    - develop
+  before_script:
+    - npm i -g npm@latest ionic@latest cordova@8.1.2
+    - npm i
+  script:
+    - ionic -v
+    - echo 'Y' | npm run build:browser
+    - cp deploy_assets/browser_htaccess.txt platforms/browser/www/.htaccess
+    - cd platforms/browser/www/
+    - ls
+    - mkdir tmp && touch tmp/restart.txt
+    - echo "$SSHKEY" | tr -d '\r' > id_rsa
+    - chmod 600 id_rsa
+    - scp -i id_rsa -o stricthostkeychecking=no -P $PORT -r ./* $USER@$HOST:$BETAPATH
+    - scp -i id_rsa -o stricthostkeychecking=no -P $PORT -r .[!.]* $USER@$HOST:$BETAPATH
+
+deploy_production:
+  stage: deploy
+  environment: Production
+  only:
+    - master
+  before_script:
+    - npm i -g npm@latest ionic@latest cordova@8.1.2
+    - npm i
+  script:
+    - ionic -v
+    - echo 'Y' | npm run build:browser
+    - cp deploy_assets/browser_htaccess.txt platforms/browser/www/.htaccess
+    - cd platforms/browser/www/
+    - ls
+    - mkdir tmp && touch tmp/restart.txt
+    - echo "$SSHKEY" | tr -d '\r' > id_rsa
+    - chmod 600 id_rsa
+    - scp -i id_rsa -o stricthostkeychecking=no -P $PORT -r ./* $USER@$HOST:$PRODPATH
+    - scp -i id_rsa -o stricthostkeychecking=no -P $PORT -r .[!.]* $USER@$HOST:$PRODPATH
