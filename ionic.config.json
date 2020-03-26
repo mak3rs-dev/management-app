@@ -1,5 +1,7 @@
 {
   "name": "mak3rs-management-app",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
