@@ -9,8 +9,8 @@ cache:
 deploy_beta:
   stage: deploy
   environment: Beta
-  only:
-    - develop
+  #only:
+  #  - develop
   before_script:
     - npm i -g npm@latest ionic@latest cordova@8.1.2
     - npm i
