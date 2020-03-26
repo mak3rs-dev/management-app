@@ -5,11 +5,13 @@
   "homepage": "https://mak3rs.tk/",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --configuration=staging",
+    "start:local": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "build:browser:staging": "ionic cordova build browser --configuration=staging --confirm",
     "build:browser": "ionic cordova build browser --prod --confirm"
   },
   "private": true,

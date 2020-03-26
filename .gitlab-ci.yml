@@ -12,11 +12,11 @@ deploy_beta:
   #only:
   #  - develop
   before_script:
-    - npm i -g npm@latest ionic@latest cordova@8.1.2
+    - npm i -g npm@latest @ionic/cli@latest cordova@8.1.2
     - npm i
   script:
     - ionic -v
-    - echo 'Y' | npm run build:browser
+    - echo 'Y' | npm run build:browser:staging
     - cp deploy_assets/browser_htaccess.txt platforms/browser/www/.htaccess
     - cd platforms/browser/www/
     - ls
@@ -32,7 +32,7 @@ deploy_production:
   only:
     - master
   before_script:
-    - npm i -g npm@latest ionic@latest cordova@8.1.2
+    - npm i -g npm@latest @ionic/cli@latest cordova@8.1.2
     - npm i
   script:
     - ionic -v
