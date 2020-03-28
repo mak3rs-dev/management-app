@@ -14,32 +14,20 @@ export const menu: MenuInterface[] = [
     },
     {
         title: 'Resumen',
-        url: '/folder/Dashboard',
+        url: '/dashboard',
         icon: 'paper-plane',
         requireLogin: true
     },
     {
         title: 'Comunidades',
-        url: '/folder/Communities',
+        url: '/community/list',
         icon: 'heart',
         requireLogin: false
     },
-    {
-        title: 'Piezas',
-        url: '/folder/Pieces',
-        icon: 'archive',
-        requireLogin: false
-    },
-    {
-        title: 'More',
-        url: '/folder/More',
-        icon: 'trash',
-        requireLogin: false
-    },
-    {
-        title: 'And More ;)',
-        url: '/folder/Much_More',
-        icon: 'warning',
-        requireLogin: false
-    }
+    // {
+    //     title: 'Piezas',
+    //     url: '/folder/Pieces',
+    //     icon: 'archive',
+    //     requireLogin: false
+    // }
 ];

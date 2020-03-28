@@ -18,6 +18,14 @@ const routes: Routes = [
     component: RegisterPage
   },
   {
+    path: 'dashboard',
+    component: RegisterPage
+  },
+  {
+    path: 'community',
+    loadChildren: () => import('./pages/community-module/community.module').then( m => m.CommunityModule)
+  },
+  {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
   }

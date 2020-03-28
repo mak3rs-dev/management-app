@@ -14,7 +14,10 @@ import { LoginPage } from './pages/login/login.page';
 import { RegisterPage } from './pages/register/register.page';
 import { ApiService } from './providers/api.service';
 import { AuthService } from './providers/auth/auth.service';
-const PAGES = [ LoginPage, RegisterPage ];
+import { DashboardPage } from './pages/dashboard/dashboard.page';
+import { CommunityModule } from './pages/community-module/community.module';
+
+const PAGES = [ LoginPage, RegisterPage, DashboardPage ];
 
 @NgModule({
   declarations: [AppComponent, ...PAGES],
@@ -23,7 +26,8 @@ const PAGES = [ LoginPage, RegisterPage ];
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    CommunityModule
   ],
   providers: [
     StatusBar,

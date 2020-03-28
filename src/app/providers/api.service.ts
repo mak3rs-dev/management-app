@@ -19,5 +19,7 @@ export class ApiService {
   me = () => this.http.get(this.core.env.endpoint+'auth/me', {headers:{Authorization: this.core.auth.token}});
   logout = () => this.http.get(this.core.env.endpoint+'auth/logout', {headers:{Authorization: this.core.auth.token}});
 
+  getCommunities = () => this.http.get(this.core.env.endpoint+'communities/all');
+  getCommunity = (alias:string) => this.http.get(this.core.env.endpoint+'communities/alias/'+ alias);
 
 }
