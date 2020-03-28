@@ -14,6 +14,8 @@ import { LoginPage } from './pages/login/login.page';
 import { RegisterPage } from './pages/register/register.page';
 import { ApiService } from './providers/api.service';
 import { AuthService } from './providers/auth/auth.service';
+import { FormsModule } from '@angular/forms';
+
 const PAGES = [ LoginPage, RegisterPage ];
 
 @NgModule({
@@ -23,7 +25,8 @@ const PAGES = [ LoginPage, RegisterPage ];
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [
     StatusBar,

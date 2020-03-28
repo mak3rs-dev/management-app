@@ -8,71 +8,85 @@
 </ion-header>
 
 <ion-content>
-  <div class="ion-padding">
+  <ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Registrar una nueva cuenta</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
+  <form #registerForm="ngForm"  class="ion-padding" (submit)="register()">
     <ion-item>
-      <ion-label position="floating" required>Nombre<ion-text color="danger">*</ion-text>
-      </ion-label>
-      <ion-input name="name"></ion-input>
+      <ion-text color="danger" style="margin-right: 10px;">*</ion-text>
+      <span>Campo requerido</span>
     </ion-item>
     <ion-item>
-      <ion-label position="floating" required>Email<ion-text color="danger">*</ion-text>
-      </ion-label>
-      <ion-input name="email" type="email"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating" required>Teléfono<ion-text color="danger">*</ion-text>
-      </ion-label>
-      <ion-input name="phone"></ion-input>
+      <ion-text color="danger" style="margin-right: 10px;">^</ion-text>
+      <span>Solo se compartirá con los administradores de las comunidades a las que pertenezcas para facilitar las tareas de logística</span>
     </ion-item>
 
-    <ion-item>
-      <ion-label type="password" position="floating" required>Contraseña<ion-text color="danger">*</ion-text>
-      </ion-label>
-      <ion-input name="password"></ion-input>
+    <ion-item style="margin-top: 30px;">
+      <ion-label position="floating">Nombre<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input [(ngModel)]="data.name" [required]="true" name="name"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label type="password" position="floating" required>Repetir contraseña<ion-text color="danger">*</ion-text>
-      </ion-label>
-      <ion-input name="password_confirm"></ion-input>
+      <ion-label position="floating">Alias<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input [(ngModel)]="data.alias" [required]="true" name="name" placeholder="Preferiblemente igual al de Telegram"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Email<ion-text color="danger">* ^</ion-text></ion-label>
+      <ion-input [(ngModel)]="data.email" [required]="true" name="email" type="email"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-grid class="ion-no-padding">
+      <ion-label position="floating">Teléfono<ion-text color="danger">* ^</ion-text></ion-label>
+      <ion-input [(ngModel)]="data.phone" [required]="true" name="phone"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label type="password" position="floating">Contraseña<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input [(ngModel)]="data.password" [required]="true" type="password" name="password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label type="password" position="floating">Repetir contraseña<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input [(ngModel)]="data.password_confirm" [required]="true" type="password" name="password_confirm"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-label>Dirección</ion-label>
+            <ion-label>Dirección<ion-text color="danger">^</ion-text></ion-label>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-input placeholder="Dirección" name="address"></ion-input>
+            <ion-input [(ngModel)]="data.address" placeholder="Dirección" name="address"></ion-input>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-input placeholder="Localidad" name="location"></ion-input>
+            <ion-input [(ngModel)]="data.location" placeholder="Localidad" name="location"></ion-input>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-input placeholder="Provincia" name="province"></ion-input>
+            <ion-input [(ngModel)]="data.province" placeholder="Provincia" name="province"></ion-input>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-input placeholder="Comunidad autónoma" name="state"></ion-input>
+            <ion-input [(ngModel)]="data.state" placeholder="Comunidad autónoma" name="state"></ion-input>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-input placeholder="País" name="country"></ion-input>
+            <ion-input [(ngModel)]="data.country" placeholder="País" name="country"></ion-input>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-input placeholder="Código Postal" type="number" name="cp"></ion-input>
+            <ion-input [(ngModel)]="data.cp" placeholder="Código Postal" name="cp"></ion-input>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -81,6 +95,5 @@
     <div class="ion-padding">
       <ion-button expand="block" type="submit" class="ion-no-margin">Crear cuenta</ion-button>
     </div>
-
-  </div>
+  </form>
 </ion-content>
