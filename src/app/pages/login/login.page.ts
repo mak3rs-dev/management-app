@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CoreService } from 'src/app/providers/core.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -8,10 +9,33 @@ import { CoreService } from 'src/app/providers/core.service';
 })
 export class LoginPage implements OnInit {
 
-  constructor(public core: CoreService) { }
+  public data = {
+    email: '',
+    password: ''
+  };
+
+  constructor(public core: CoreService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.core.isLoggedIn=true;
+    if (this.activatedRoute.snapshot.queryParams.msg==='accountactivated') {
+      this.core.successToast(null, 'Su cuenta ha sido activada con éxito, ahora puede iniciar sesión', 30000);
+    }
+    if (this.activatedRoute.snapshot.queryParams.msg==='logout') {
+      this.core.successToast(null, 'Ha cerrado sesión, nos vemos pronto!', 10000);
+    }
+  }
+
+  login() {
+    this.core.createLoading().then(loading => {
+      this.core.auth.login(this.data, () => {
+        loading.dismiss();
+        this.core.navCtrl.navigateRoot('/');
+      }, err => {
+        // TODO: Handle errors properly
+        this.core.errorToast(loading);
+        console.error(err);
+      });
+    });
   }
 
 }
