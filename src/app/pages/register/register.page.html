@@ -27,29 +27,29 @@
 
     <ion-item style="margin-top: 30px;">
       <ion-label position="floating">Nombre<ion-text color="danger">*</ion-text></ion-label>
-      <ion-input [(ngModel)]="data.name" [required]="true" name="name"></ion-input>
+      <ion-input [autocomplete]="'nope'" [(ngModel)]="data.name" [required]="true" name="name"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Alias<ion-text color="danger">*</ion-text></ion-label>
-      <ion-input [(ngModel)]="data.alias" [required]="true" name="name" placeholder="Preferiblemente igual al de Telegram"></ion-input>
+      <ion-input [autocomplete]="'nope'" [(ngModel)]="data.alias" [required]="true" name="name" placeholder="Preferiblemente igual al de Telegram"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Email<ion-text color="danger">* ^</ion-text></ion-label>
-      <ion-input [(ngModel)]="data.email" [required]="true" name="email" type="email"></ion-input>
+      <ion-input [autocomplete]="'nope'" [(ngModel)]="data.email" [required]="true" name="email" type="email"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">Teléfono<ion-text color="danger">* ^</ion-text></ion-label>
-      <ion-input [(ngModel)]="data.phone" [required]="true" name="phone"></ion-input>
+      <ion-input [autocomplete]="'nope'" [(ngModel)]="data.phone" [required]="true" name="phone"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label type="password" position="floating">Contraseña<ion-text color="danger">*</ion-text></ion-label>
-      <ion-input [(ngModel)]="data.password" [required]="true" type="password" name="password"></ion-input>
+      <ion-input [autocomplete]="'nope'" [(ngModel)]="data.password" [required]="true" type="password" name="password"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label type="password" position="floating">Repetir contraseña<ion-text color="danger">*</ion-text></ion-label>
-      <ion-input [(ngModel)]="data.password_confirm" [required]="true" type="password" name="password_confirm"></ion-input>
+      <ion-input [autocomplete]="'nope'" [(ngModel)]="data.password_confirm" [required]="true" type="password" name="password_confirm"></ion-input>
     </ion-item>
 
     <ion-item>
