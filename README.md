@@ -20,14 +20,26 @@ Versión 74.0 (64-bit)
 
 ### Utilización 🔧
 
+Con el fin de agilizar la organización de la comunidad y la correcta planificación
+de entregas y recogidas de material, el primer paso será registrarse como usuario
+de la comunidad mediante la ventana _Register_. 
 
 ```
-Web:
+- Nombre completo
+- Alias (usuario Telegram)
+- Email
+- Teléfono
+- Contraseña y confirmación de la misma.
+- Dirección completa.
 ```
+_Los administradores de la comunidad necesitarán acceder a tu información para gestionar
+las recogidas del material que aportes y entregas del que necesites._
 
-
+Una vez recibida la confirmación de cuenta creada (email de confirmación?) podrás acceder
+pulsando en _Iniciar sesión_ e introduciendo los datos solicitados.
 ```
-Smartphone:
+- Email
+- Contraseña
 ```
 
 
@@ -40,11 +52,14 @@ Pruebas ?
 
 ```
 
-### Y las pruebas de estilo de codificación ⌨️
+### Enlaces de Interés ⌨️
 
-Pruebas ?
+Si tienes cualquier sugerencia puedes contactar por privado con cualquier administrador.
+
 ```
-
+@administrador1
+@administrador2
+@administrador3
 ```
 
 ## Construido con 🛠️
