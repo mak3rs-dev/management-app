@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -12,11 +13,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { CoreService } from './providers/core.service';
 import { LoginPage } from './pages/login/login.page';
 import { RegisterPage } from './pages/register/register.page';
+import { DashboardPage } from './pages/dashboard/dashboard.page';
 import { ApiService } from './providers/api.service';
 import { AuthService } from './providers/auth/auth.service';
-import { FormsModule } from '@angular/forms';
 
-const PAGES = [ LoginPage, RegisterPage ];
+import { CommunityModule } from './pages/community-module/community.module';
+
+const PAGES = [ LoginPage, RegisterPage, DashboardPage ];
 
 @NgModule({
   declarations: [AppComponent, ...PAGES],
@@ -26,7 +29,8 @@ const PAGES = [ LoginPage, RegisterPage ];
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    CommunityModule
   ],
   providers: [
     StatusBar,

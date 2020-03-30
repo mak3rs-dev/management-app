@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { LoginPage } from './pages/login/login.page';
 import { RegisterPage } from './pages/register/register.page';
+import { DashboardPage } from './pages/dashboard/dashboard.page';
 
 const routes: Routes = [
   {
@@ -16,6 +17,14 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterPage
+  },
+  {
+    path: 'dashboard',
+    component: DashboardPage
+  },
+  {
+    path: 'community',
+    loadChildren: () => import('./pages/community-module/community.module').then( m => m.CommunityModule)
   },
   {
     path: 'folder/:id',
