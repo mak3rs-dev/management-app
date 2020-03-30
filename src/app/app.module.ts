@@ -18,8 +18,9 @@ import { ApiService } from './providers/api.service';
 import { AuthService } from './providers/auth/auth.service';
 
 import { CommunityModule } from './pages/community-module/community.module';
+import { E404Page } from './pages/404/404.page';
 
-const PAGES = [ LoginPage, RegisterPage, DashboardPage ];
+const PAGES = [ LoginPage, RegisterPage, DashboardPage, E404Page ];
 
 @NgModule({
   declarations: [AppComponent, ...PAGES],
