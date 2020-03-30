@@ -14,4 +14,9 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-list *ngIf="data">
+    <ion-item *ngFor="let community of data.data" (click)="detail(community)">
+      <ion-label>{{community.name}}</ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
