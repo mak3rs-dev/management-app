@@ -7,11 +7,13 @@ gestión de recogidas de elementos sanitarios realizados por voluntarios.
 ### Pre-requisitos 📋
 
 
-Navegadores web soportados
+Navegadores web probados:
 
+Google Chrome
+```
+Versión 80.0.3987.149 (Build oficial) (64 bits)
 ```
 
-```
 
 ### Utilización 🔧
 
