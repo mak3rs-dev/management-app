@@ -8,7 +8,7 @@ export class AuthService {
 
   private data = {user: null, token: null};
   public get user() { return this.data.user; }
-  public get token() { return (this.data.token)?'Bearer '+this.data.token.access_token:null; }
+  public get token() { return (this.data.token)?'Bearer '+this.data.token.access_token:''; }
 
   private core: CoreService;
   public initCore = (core: CoreService) => {
@@ -20,7 +20,7 @@ export class AuthService {
 
   private initChecks() {
     let sess = JSON.parse(localStorage.getItem('session'));
-    if (sess) this.data = sess;
+    if (sess && sess.token) this.data = sess;
 
     if (this.token) {
       this.core.api.me().subscribe(user => {
