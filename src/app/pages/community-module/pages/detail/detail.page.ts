@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 export class DetailPage implements OnInit {
 
   get adminPermission(): boolean {
-    return this.core.auth.user.role_name=='USER:ADMIN'||(this.data && this.data.user_admin)||false;
+    return (this.core.auth.user&&this.core.auth.user.role_name=='USER:ADMIN')||(this.data && this.data.user_admin)||false;
   }
   data:any = null;
 

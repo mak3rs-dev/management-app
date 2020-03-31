@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 export class InfoPage {
 
   get editPermission(): boolean {
-    return this.core.auth.user.role_name=='USER:ADMIN'||(this.data && this.data.user_admin)||false;
+    return (this.core.auth.user&&this.core.auth.user.role_name=='USER:ADMIN')||(this.data && this.data.user_admin)||false;
   }
   editMode: boolean = false;
   data: any = null;
