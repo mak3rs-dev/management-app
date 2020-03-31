@@ -1,5 +1,30 @@
 <ion-content class="ion-padding">
-  <ion-row>
 
-  </ion-row>
+  <ion-fab vertical="top" horizontal="end" slot="fixed" *ngIf="editPermission">
+    <ion-fab-button *ngIf="!editMode" (click)="editMode = true">
+      <ion-icon name="create-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button *ngIf="editMode" (click)="putCommunity()">
+      <ion-icon name="checkmark-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-card *ngIf="data">
+    <ion-card-header *ngIf="!editMode">
+      <ion-card-title>{{data.name}}</ion-card-title>
+      <ion-card-subtitle>{{data.alias}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-header *ngIf="editMode">
+      <ion-input [autocomplete]="'nope'" [(ngModel)]="data.name" placeholder="Nombre"></ion-input>
+      <ion-input [autocomplete]="'nope'" [(ngModel)]="data.alias" placeholder="Alias"></ion-input>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ng-container *ngIf="!editMode">
+        {{data.description||'La comunidad no ha proporcionado información adicional'}}
+      </ng-container>
+      <ion-textarea *ngIf="editMode" [(ngModel)]="data.description" placeholder="Descripción o información a mostrar"></ion-textarea>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

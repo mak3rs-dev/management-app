@@ -9,6 +9,10 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class InfoPage {
 
+  get editPermission(): boolean {
+    return this.core.auth.user.role_name=='USER:ADMIN'||(this.data && this.data.user_admin)||false;
+  }
+  editMode: boolean = false;
   data: any = null;
 
   constructor(public core: CoreService, private activatedRoute: ActivatedRoute) {
@@ -27,6 +31,16 @@ export class InfoPage {
     });
   }
 
+  putCommunity() {
+    this.editMode = false;
+    this.core.createLoading().then(loading => {
+      let handleErr = () => this.core.errorToast(loading).then(()=>this.editMode = true);
 
+      this.core.api.updateCommunity(this.data).subscribe((Res:any) => {
+        this.data = Res.community;
+        this.core.successToast(loading, Res.message);
+      }, handleErr);
+    });
+  }
 
 }

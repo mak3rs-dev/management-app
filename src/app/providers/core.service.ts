@@ -10,7 +10,7 @@ import { AuthService } from './auth/auth.service';
 export class CoreService {
 
   public env: any = environment;
-  public isLoggedIn = false;
+  get isLoggedIn() { return this.auth.token!=''; };
 
   constructor(
     public api: ApiService,

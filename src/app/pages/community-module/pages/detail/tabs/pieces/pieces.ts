@@ -15,9 +15,18 @@ export class PiecesPage {
   }
 
   ionViewDidEnter(): void {
+    this.refresh();
+  }
+
+  public refresh(page: number=1) {
     this.core.createLoading().then(loading => {
       if (this.activatedRoute.snapshot.root.firstChild.firstChild.params.alias) {
-        this.core.api.getCommunityPieces(this.activatedRoute.snapshot.root.firstChild.firstChild.params.alias).subscribe(Res => {
+        this.core.api.getCommunityPieces(this.activatedRoute.snapshot.root.firstChild.firstChild.params.alias, page).subscribe((Res:any) => {
+          Res.data.forEach(itm => {
+            itm.units_manufactured = (itm.stock_control[0]&&itm.stock_control[0].units_manufactured)||0;
+            itm.units_collected = (itm.collect_pieces[0]&&itm.collect_pieces[0].units_manufactured)||0;
+            itm.units_stock = itm.units_manufactured-itm.units_collected;
+          })
           this.data = Res;
           loading.dismiss();
         }, (err) => {

@@ -21,16 +21,20 @@
   <ion-tabs *ngIf="data">
     <ion-tab-bar slot="top">
       <ion-tab-button tab="info">
-          <ion-label>Información</ion-label>
-          <ion-icon name="information-circle"></ion-icon>
+        <ion-label>Información</ion-label>
+        <ion-icon name="information-circle"></ion-icon>
       </ion-tab-button>
       <ion-tab-button [disabled]="!data.user" tab="pieces">
-          <ion-label>Piezas</ion-label>
-          <ion-icon name="cube-outline"></ion-icon>
+        <ion-label>Piezas</ion-label>
+        <ion-icon name="cube-outline"></ion-icon>
       </ion-tab-button>
       <ion-tab-button [disabled]="!data.user" tab="ranking">
-          <ion-label>Ranking</ion-label>
-          <ion-icon name="ribbon-outline"></ion-icon>
+        <ion-label>Ranking</ion-label>
+        <ion-icon name="ribbon-outline"></ion-icon>
+      </ion-tab-button>
+      <ion-tab-button tab="stock" *ngIf="adminPermission">
+        <ion-label>Stock</ion-label>
+        <ion-icon name="file-tray-stacked-outline"></ion-icon>
       </ion-tab-button>
     </ion-tab-bar>
   </ion-tabs>

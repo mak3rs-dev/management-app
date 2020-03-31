@@ -6,12 +6,12 @@ export interface MenuInterface {
 }
 
 export const menu: MenuInterface[] = [
-    {
-        title: 'Inicio',
-        url: '/folder/Inbox',
-        icon: 'mail',
-        requireLogin: false
-    },
+    // {
+    //     title: 'Inicio',
+    //     url: '/folder/Inbox',
+    //     icon: 'mail',
+    //     requireLogin: false
+    // },
     {
         title: 'Resumen',
         url: '/dashboard',

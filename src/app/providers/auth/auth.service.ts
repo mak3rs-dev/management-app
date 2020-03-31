@@ -25,7 +25,6 @@ export class AuthService {
     if (this.token) {
       this.core.api.me().subscribe(user => {
         this.data.user = user;
-        this.core.isLoggedIn=true;
 
         this.updateStorage();
       }, () => {
@@ -50,7 +49,6 @@ export class AuthService {
       this.data.token = sess;
       this.core.api.me().subscribe(user => {
         this.data.user = user;
-        this.core.isLoggedIn=true;
 
         this.updateStorage();
 
