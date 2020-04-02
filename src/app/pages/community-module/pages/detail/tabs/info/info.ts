@@ -15,6 +15,8 @@ export class InfoPage {
   editMode: boolean = false;
   data: any = null;
 
+  prevAlias: string = null;
+
   constructor(public core: CoreService, private activatedRoute: ActivatedRoute) {
   }
 
@@ -25,6 +27,7 @@ export class InfoPage {
       if (this.activatedRoute.snapshot.root.firstChild.firstChild.params.alias) {
         this.core.api.getCommunity(this.activatedRoute.snapshot.root.firstChild.firstChild.params.alias).subscribe(Res => {
           this.data = Res;
+          this.prevAlias = this.data.alias;
           loading.dismiss();
         }, handleErr);
       } else handleErr();
@@ -34,11 +37,20 @@ export class InfoPage {
   putCommunity() {
     this.editMode = false;
     this.core.createLoading().then(loading => {
-      let handleErr = () => this.core.errorToast(loading).then(()=>this.editMode = true);
+      let handleErr = () => this.core.errorToast(loading).then(()=>{
+        this.editMode = true;
+        if (this.data.alias == null) this.data.alias = this.prevAlias;
+      });
+
+      if (this.prevAlias == this.data.alias) this.data.alias = null;
 
       this.core.api.updateCommunity(this.data).subscribe((Res:any) => {
-        this.data = Res.community;
         this.core.successToast(loading, Res.message);
+        if (this.data.alias!=null) {
+          this.core.navCtrl.navigateRoot('/community/'+Res.community.alias);
+        } {
+          this.data = Res.community;
+        }
       }, handleErr);
     });
   }
