@@ -31,6 +31,10 @@ ion-content {
   overflow: default;
 }
 
+ion-content {
+  --background: black;
+}
+
 ion-content:after {
   content: 'error 404';
   font-family: OCR-A;
