@@ -6,7 +6,6 @@ import { DetailPage } from './detail.page';
 import { InfoPageModule } from './tabs/info/info.module';
 import { PiecesPageModule } from './tabs/pieces/pieces.module';
 import { RankingPageModule } from './tabs/ranking/ranking.module';
-import { StockPageModule } from './tabs/stock/stock.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +17,6 @@ import { StockPageModule } from './tabs/stock/stock.module';
     InfoPageModule,
     PiecesPageModule,
     RankingPageModule,
-    StockPageModule,
     DetailRoutingModule
   ]
 })

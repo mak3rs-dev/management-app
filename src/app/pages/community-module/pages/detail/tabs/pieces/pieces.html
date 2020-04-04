@@ -2,14 +2,18 @@
 
   <ng-container *ngIf="data">
     <ion-card *ngFor="let piece of data.data" style="display: flex;">
-      <img [src]="piece.image||'/assets/icon/favicon.png'" style="max-width: 100px; max-height: 100px; padding: 10px;">
+      <img [src]="piece.picture||'/assets/icon/favicon.png'" style="max-width: 100px; max-height: 100px; padding: 10px;">
       <ion-card-header>
         <ion-card-title>{{piece.name}}</ion-card-title>
         <ion-card-subtitle>
-          Comunidad -> Fabricadas: {{piece.units_manufactured}} | Recibidas: {{piece.units_collected}} | Stock: {{piece.units_stock}}
+          Comunidad -> Fabricadas: {{piece.units_manufactured}} | Recibidas: {{piece.units_collected}} | Stock: {{piece.units_manufactured-piece.units_collected}}
         </ion-card-subtitle>
         <ion-card-subtitle>
-          Tú -> Fabricadas: {{piece.units_manufactured}} | Recibidas: {{piece.units_collected}} | Stock: {{piece.units_stock}}
+          <span *ngIf="piece.user===null"><ion-spinner></ion-spinner> Cargando...</span>
+          <span *ngIf="piece.user!==null && piece.user===undefined">Parece que aún no has fabricado ninguna unidad</span>
+          <ng-container *ngIf="piece.user">
+            Tú -> Fabricadas: {{piece.user.units_manufactured}} | Entregadas: {{piece.user.units_collected}} | Stock: {{piece.user.stock}}
+          </ng-container>
         </ion-card-subtitle>
       </ion-card-header>
 

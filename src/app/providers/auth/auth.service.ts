@@ -19,6 +19,7 @@ export class AuthService {
   constructor() {}
 
   private initChecks() {
+    //TODO: Add token refresh every hour since last refresh/login
     let sess = JSON.parse(localStorage.getItem('session'));
     if (sess && sess.token) this.data = sess;
 
@@ -57,11 +58,20 @@ export class AuthService {
     }, err => handleErr(err));
   }
 
-  public logout() {
+  public logout(cb:Function = null) {
     this.core.api.logout().subscribe(() => {
       this.data = {user: null, token: null};
       this.updateStorage();
-    }, () => {}); // TODO: Handle error
+      if (cb) cb();
+    }, err => {
+      if (err.status==401) { // Handle already invalid session
+        this.data = {user: null, token: null};
+        this.updateStorage();
+        if (cb) cb();
+      } else {
+        this.core.errorToast(err);
+      }
+    });
   }
 
   updateStorage() {

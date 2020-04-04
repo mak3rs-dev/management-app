@@ -23,6 +23,9 @@ export class LoginPage implements OnInit {
     if (this.activatedRoute.snapshot.queryParams.msg==='logout') {
       this.core.successToast(null, 'Ha cerrado sesión, nos vemos pronto!', 10000);
     }
+    if (this.activatedRoute.snapshot.queryParams.msg==='expired') {
+      this.core.errorToast(null, 'Su sesión se ha cerrado por seguridad, inicie sesión de nuevo', 10000);
+    }
   }
 
   login() {
@@ -30,7 +33,7 @@ export class LoginPage implements OnInit {
       this.core.auth.login(this.data, () => {
         loading.dismiss();
         this.core.navCtrl.navigateRoot('/');
-      }, err => this.core.errorToast(loading, err.error, 3000));
+      }, err => this.core.errorToast(loading, err, 3000));
     });
   }
 

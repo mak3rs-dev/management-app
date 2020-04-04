@@ -43,9 +43,14 @@ export class CoreService {
   public async errorToast(loading=null, message:any|string=null, duration=null) {
     if (loading) loading.dismiss();
 
-    if (typeof message != 'string') message = this.fetchErrMsg(message);
+    if (typeof message != 'string') {
+      if (message.status==401 && this.isLoggedIn) {
+        this.auth.logout(()=>this.navCtrl.navigateRoot('/login?msg=expired'));
+      }
+      message = this.fetchErrMsg(message.error);
+    }
 
-    await (await this.toastCtrl.create({
+    return await (await this.toastCtrl.create({
       message: message||'Se ha producido un error, inténtelo de nuevo más tarde',
       duration: duration||3000,
       color: 'danger'

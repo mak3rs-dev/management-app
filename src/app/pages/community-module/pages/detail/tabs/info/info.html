@@ -10,6 +10,7 @@
   </ion-fab>
 
   <ion-card *ngIf="data">
+    <img [src]="data.picture" style="width: 100%;">
     <ion-card-header *ngIf="!editMode">
       <ion-card-title>{{data.name}}</ion-card-title>
       <ion-card-subtitle>{{data.alias}}</ion-card-subtitle>

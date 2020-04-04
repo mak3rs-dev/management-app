@@ -5,7 +5,6 @@ import { DetailPage } from './detail.page';
 import { InfoPage } from './tabs/info/info';
 import { PiecesPage } from './tabs/pieces/pieces';
 import { RankingPage } from './tabs/ranking/ranking';
-import { StockPage } from './tabs/stock/stock';
 
 const routes: Routes = [{
   path: '',
@@ -14,7 +13,7 @@ const routes: Routes = [{
     { path: 'info', component: InfoPage },
     { path: 'pieces', component: PiecesPage },
     { path: 'ranking', component: RankingPage },
-    { path: 'stock', component: StockPage },
+    { path: 'stock', component: RankingPage },
     { path: '', redirectTo: 'info', pathMatch: 'full' }
   ],
 }];

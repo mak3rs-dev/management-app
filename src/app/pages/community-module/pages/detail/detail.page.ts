@@ -44,7 +44,7 @@ export class DetailPage implements OnInit {
       this.core.api.joinCommunity(DetailPage.data.uuid).subscribe(_ => {
         this.core.successToast(loading, 'Te has unido a la comunidad correctamente');
         this.refresh();
-      }, err => this.core.errorToast(loading, err.error, 3000));
+      }, err => this.core.errorToast(loading, err, 3000));
     });
   }
 

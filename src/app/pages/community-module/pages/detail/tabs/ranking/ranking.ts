@@ -14,51 +14,57 @@ export class RankingPage {
   @ViewChild('downloadLink', {static:true}) private downloadLink: ElementRef;
 
   get adminPermission(): boolean {
-    // TODO: this.data.user_admin is not defined, should I fetch again community info?
     return this.core.auth.user.role_name=='USER:ADMIN'||(DetailPage.data && DetailPage.data.user_admin)||false;
   }
   data: any = null;
+  query: 'ranking'|'stock' = 'ranking';
+  showAddresses: boolean = false;
   loadingMore: boolean = false;
   communityAlias: string = null;
 
   constructor(
     public core: CoreService,
-    private activatedRoute: ActivatedRoute,
     private router: Router,
-    private http: HttpClient
-  ) {}
+    private http: HttpClient,
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   ionViewDidEnter(): void {
-    this.communityAlias = this.activatedRoute.snapshot.root.firstChild.firstChild.params.alias;
+    this.query = <'ranking'|'stock'>this.activatedRoute.snapshot.routeConfig.path;
+    if (this.query=='stock') this.showAddresses = true;
+    this.communityAlias = DetailPage.data.alias;
     this.refresh();
   }
 
   public refresh(event=null) {
-    if (this.communityAlias) {
-      this.core.createLoading().then(loading => {
-        this.core.api.getCommunityRanking(this.communityAlias).subscribe(Res => {
-          this.data = Res;
-          loading.dismiss();
-        }, () => {
-          this.core.errorToast(loading, 'No tienes permiso para acceder a esta información, debes formar parte de la comunidad');
-          this.router.navigateByUrl('info');
-        });
+    const doWork = (loading=null) => {
+      const query = (this.query=='ranking')?this.core.api.getCommunityRanking:this.core.api.getCommunityStock;
+      query(this.communityAlias).subscribe(Res => {
+        this.data = Res;
+        if (loading) loading.dismiss();
+        if (event != null) event.target.complete();
+      }, err => {
+        this.core.errorToast(loading, err);
+        this.router.navigateByUrl('/community/'+DetailPage.data.alias+'/info');
+        if (event != null) event.target.complete();
       });
-    } else this.router.navigateByUrl('info');
-    if (event != null) event.target.complete();
+    }
+
+    if (!event) this.core.createLoading().then(loading => doWork(loading));
+    else doWork();
   }
 
   loadMore() {
-    const nextPage = Math.trunc(this.data.data.lenght / this.data.per_page)+1;
+    const nextPage = Math.trunc(this.data.data.length / this.data.per_page)+1;
     if (nextPage<=this.data.last_page) {
       this.loadingMore = true;
-
-      this.core.api.getCommunityRanking(this.communityAlias).subscribe((Res:any) => {
+      const query = (this.query=='ranking')?this.core.api.getCommunityRanking:this.core.api.getCommunityStock;
+      query(this.communityAlias, nextPage).subscribe((Res:any) => {
         this.data.data.push(...Res.data);
         this.loadingMore = false;
       }, err => {
         this.loadingMore = false;
-        this.core.errorToast(null, err.error);
+        this.core.errorToast(null, err);
       });
     }
   }
@@ -78,7 +84,7 @@ export class RankingPage {
       link.click();
 
       window.URL.revokeObjectURL(url);
-    }).catch(err => this.core.errorToast(null, err.error));
+    }).catch(err => this.core.errorToast(null, err));
   }
 
 }
