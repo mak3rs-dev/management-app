@@ -45,7 +45,7 @@ export class CoreService {
     if (loading) loading.dismiss();
 
     if (typeof message != 'string') {
-      if (message.status==401 && this.isLoggedIn) {
+      if (message.status && message.status==401 && this.isLoggedIn) {
         this.auth.logout(()=>this.navCtrl.navigateRoot('/login?msg=expired'));
       }
       message = this.fetchErrMsg(message.error);
