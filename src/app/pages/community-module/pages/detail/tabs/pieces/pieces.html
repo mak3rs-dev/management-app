@@ -1,7 +1,7 @@
 <ion-content class="ion-padding">
 
   <ng-container *ngIf="data">
-    <ion-card *ngFor="let piece of data.data" style="display: flex;">
+    <ion-card *ngFor="let piece of data.data" style="display: flex;" [style.cursor]="piece.user!==null?'pointer':'unset'" (click)="piece.user!==null&&clickPiece(piece)">
       <img [src]="piece.picture||'/assets/icon/favicon.png'" style="max-width: 100px; max-height: 100px; padding: 10px;">
       <ion-card-header>
         <ion-card-title>{{piece.name}}</ion-card-title>

@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { CommunityRoutingModule } from './community-routing.module';
 import { CommonModule } from '@angular/common';
 import { DetailPageModule } from './pages/detail/detail.module';
+import { ComponentsModule } from './components/components.module';
 
 const PAGES = [ ListPage ];
 
@@ -15,7 +16,8 @@ const PAGES = [ ListPage ];
     CommonModule,
     IonicModule,
     CommunityRoutingModule,
-    DetailPageModule
+    DetailPageModule,
+    ComponentsModule
   ]
 })
 export class CommunityModule {}

@@ -32,6 +32,7 @@ export class ApiService {
   // USER
   getCommunitiesByUser = (page:number=1) => this.http.get(this.core.env.endpoint+'users/communities?page='+page, {headers:{Authorization: this.core.auth.token}});
   getRankingByUserPiece = (alias:string, user:string, piece:string) => this.http.get(this.core.env.endpoint+'communities/ranking/'+alias+'?piece='+piece+'&user='+user, {headers:{Authorization: this.core.auth.token}});
+  putNewPieceUnits = (uuid_community:string, uuid_piece:string, units:number) => this.http.post(this.core.env.endpoint+'/communities/piece/add-or-update', {uuid_community: uuid_community,uuid_piece: uuid_piece,units: units}, {headers:{Authorization: this.core.auth.token}});
 
 
 }

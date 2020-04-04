@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CoreService } from 'src/app/providers/core.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DetailPage } from '../../detail.page';
+import { UpdateStockComponentPage } from 'src/app/pages/community-module/components/updatestock/updatestock';
 
 @Component({
   selector: 'page-pieces',
@@ -24,6 +25,7 @@ export class PiecesPage {
       this.core.api.getCommunityPieces(DetailPage.data.alias, page).subscribe((Res:any) => {
         Res.data.forEach(itm => {
           itm.user = null;
+          itm.uuid_community = DetailPage.data.uuid;
           this.core.api.getRankingByUserPiece(DetailPage.data.alias, this.core.auth.user.uuid, itm.uuid).subscribe(ResRanking => {
             itm.user = (<any>ResRanking).data[0];
           }, err=>this.core.errorToast(loading, err));
@@ -36,5 +38,8 @@ export class PiecesPage {
       });
     });
   }
+
+  public clickPiece = (p) => this.changeStock(p);
+  changeStock = (p) => UpdateStockComponentPage.Open(p, this.core, () => this.refresh());
 
 }

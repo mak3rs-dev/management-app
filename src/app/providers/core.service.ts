@@ -1,7 +1,7 @@
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { ToastController, LoadingController, NavController } from '@ionic/angular';
+import { ToastController, LoadingController, NavController, AlertController, ModalController } from '@ionic/angular';
 import { AuthService } from './auth/auth.service';
 
 @Injectable({
@@ -16,6 +16,7 @@ export class CoreService {
     public api: ApiService,
     public auth: AuthService,
     public loadingCtrl: LoadingController,
+    public modalCtrl: ModalController,
     public toastCtrl: ToastController,
     public navCtrl: NavController
   ) {

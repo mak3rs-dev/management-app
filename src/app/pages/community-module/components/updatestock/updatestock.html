@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Actualizar stock</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        CANCELAR
+      </ion-button>
+      <ion-button (click)="save()" *ngIf="getDiff!=0">
+        GUARDAR
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item>
+      <ion-label>Diferencia</ion-label>
+      <ion-input type="number" [ngModel]="getDiff" [readonly]="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Stock tras el guardado</ion-label>
+      <ion-input type="number" [ngModel]="getStock" [readonly]="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Nº Total fabricadas</ion-label>
+      <ion-input autofocus="autofocus" type="number" (ionBlur)="validate()" [(ngModel)]="newStock" [min]="getMin"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full" fill="outline" (click)="performDiff(-1)">
+          <ion-label>-1</ion-label>
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="full" fill="outline" (click)="performDiff(1)">
+          <ion-label>+1</ion-label>
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="full" fill="outline" (click)="performDiff(2)">
+          <ion-label>+2</ion-label>
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="full" fill="outline" (click)="performDiff(4)">
+          <ion-label>+4</ion-label>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ng-container *ngIf="getDiff<0">
+    <ion-card color="danger">
+      <ion-card-header><h2>¡Nota importante!</h2></ion-card-header>
+      <ion-card-content>
+        Se dispone a eliminar unidades de su stock. Le rogamos que por favor evite este tipo de actualizaciones, puesto que significa que durante un tiempo la comunidad ha estado pensando que disponía de unas unidades que en realidad no dispone. <br><b>Si ha sido un error, por favor continúe y establezca el número correcto tan pronto como sea posible.</b> De lo contrario se podrán producir problemas en la logística y administración de la comunidad.
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ion-content>
