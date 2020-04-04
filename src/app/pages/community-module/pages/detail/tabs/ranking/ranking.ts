@@ -14,7 +14,7 @@ export class RankingPage {
   @ViewChild('downloadLink', {static:true}) private downloadLink: ElementRef;
 
   get adminPermission(): boolean {
-    return this.core.auth.user.role_name=='USER:ADMIN'||(DetailPage.data && DetailPage.data.user_admin)||false;
+    return (this.core.auth.user&&this.core.auth.user.role_name=='USER:ADMIN')||(DetailPage.data && DetailPage.data.user_admin)||false;
   }
   data: any = null;
   query: 'ranking'|'stock' = 'ranking';
