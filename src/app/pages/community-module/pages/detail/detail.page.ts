@@ -9,10 +9,14 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DetailPage implements OnInit {
 
+  public static data: any = null;
+
   get adminPermission(): boolean {
-    return (this.core.auth.user&&this.core.auth.user.role_name=='USER:ADMIN')||(this.data && this.data.user_admin)||false;
+    return (this.core.auth.user&&this.core.auth.user.role_name=='USER:ADMIN')||(DetailPage.data && DetailPage.data.user_admin)||false;
   }
-  data:any = null;
+  get data():any {
+    return DetailPage.data;
+  }
 
   constructor(public core: CoreService, private activatedRoute: ActivatedRoute) { }
 
@@ -28,7 +32,7 @@ export class DetailPage implements OnInit {
 
       if (this.activatedRoute.snapshot.params.alias) {
         this.core.api.getCommunity(this.activatedRoute.snapshot.params.alias).subscribe(Res => {
-          this.data = Res;
+          DetailPage.data = Res;
           loading.dismiss();
         }, handleErr);
       } else handleErr();
@@ -37,10 +41,10 @@ export class DetailPage implements OnInit {
 
   join() {
     this.core.createLoading().then(loading => {
-      this.core.api.joinCommunity(this.data.uuid).subscribe(_ => {
+      this.core.api.joinCommunity(DetailPage.data.uuid).subscribe(_ => {
         this.core.successToast(loading, 'Te has unido a la comunidad correctamente');
         this.refresh();
-      }, ()=>this.core.errorToast(loading));
+      }, err => this.core.errorToast(loading, err.error, 3000));
     });
   }
 

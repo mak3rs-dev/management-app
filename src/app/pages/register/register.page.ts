@@ -30,11 +30,7 @@ export class RegisterPage {
       this.core.api.register(this.data).subscribe(_ => {
         this.core.successToast(loading, 'Se ha creado su cuenta correctamente, para iniciar sesión debe de confirmar su correo electrónico. \n\nPor favor, REVISE LA CARPETA DE SPAM/NO DESEADO', 15000);
         this.core.navCtrl.navigateRoot('/login');
-      }, err => {
-        // TODO: Handle errors properly
-        this.core.errorToast(loading);
-        console.error('Error registering', err);
-      });
+      }, err => this.core.errorToast(loading, err.error, 5000));
     });
   }
 

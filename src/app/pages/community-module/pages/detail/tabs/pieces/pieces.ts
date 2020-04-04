@@ -29,11 +29,11 @@ export class PiecesPage {
           })
           this.data = Res;
           loading.dismiss();
-        }, (err) => {
+        }, () => {
           this.core.errorToast(loading, 'No tienes permiso para acceder a esta información, debes formar parte de la comunidad');
           this.router.navigateByUrl('info');
         });
-      } else this.core.errorToast(loading);
+      } else this.router.navigateByUrl('info');
     });
   }
 

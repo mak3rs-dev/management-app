@@ -40,13 +40,28 @@ export class CoreService {
     })).present();
   }
 
-  public async errorToast(loading=null, message=null, duration=null) {
+  public async errorToast(loading=null, message:any|string=null, duration=null) {
     if (loading) loading.dismiss();
+
+    if (typeof message != 'string') message = this.fetchErrMsg(message);
+
     await (await this.toastCtrl.create({
       message: message||'Se ha producido un error, inténtelo de nuevo más tarde',
       duration: duration||3000,
       color: 'danger'
     })).present();
+  }
+
+  public fetchErrMsg(err) {
+    if (err.error) return err.error;
+    if (err.errors) {
+      let msg = 'Se han producido los siguientes errores: ';
+      for (let itm in err.errors) {
+        msg += '\n- '+err.errors[itm].toString();
+      }
+      return msg;
+    }
+    if (Object.getPrototypeOf(err).toString().indexOf('ProgressEvent')) return 'Se ha producido un error de comunicación, por favor, compruebe su conexión.';
   }
 
 }

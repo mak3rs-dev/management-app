@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CoreService } from 'src/app/providers/core.service';
 import { ActivatedRoute } from '@angular/router';
+import { DetailPage } from '../../detail.page';
 
 @Component({
   selector: 'page-info',
@@ -13,25 +14,13 @@ export class InfoPage {
     return (this.core.auth.user&&this.core.auth.user.role_name=='USER:ADMIN')||(this.data && this.data.user_admin)||false;
   }
   editMode: boolean = false;
-  data: any = null;
+  get data():any {
+    return DetailPage.data;
+  }
 
   prevAlias: string = null;
 
   constructor(public core: CoreService, private activatedRoute: ActivatedRoute) {
-  }
-
-  ionViewDidEnter(): void {
-    this.core.createLoading().then(loading => {
-      let handleErr = () => this.core.errorToast(loading);
-
-      if (this.activatedRoute.snapshot.root.firstChild.firstChild.params.alias) {
-        this.core.api.getCommunity(this.activatedRoute.snapshot.root.firstChild.firstChild.params.alias).subscribe(Res => {
-          this.data = Res;
-          this.prevAlias = this.data.alias;
-          loading.dismiss();
-        }, handleErr);
-      } else handleErr();
-    });
   }
 
   putCommunity() {
@@ -49,7 +38,7 @@ export class InfoPage {
         if (this.data.alias!=null) {
           this.core.navCtrl.navigateRoot('/community/'+Res.community.alias);
         } {
-          this.data = Res.community;
+          DetailPage.data = Res.community;
         }
       }, handleErr);
     });

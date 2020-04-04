@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CoreService } from 'src/app/providers/core.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { DetailPage } from '../../detail.page';
 
 @Component({
   selector: 'page-ranking',
@@ -14,7 +15,7 @@ export class RankingPage {
 
   get adminPermission(): boolean {
     // TODO: this.data.user_admin is not defined, should I fetch again community info?
-    return this.core.auth.user.role_name=='USER:ADMIN'||(this.data && this.data.user_admin)||false;
+    return this.core.auth.user.role_name=='USER:ADMIN'||(DetailPage.data && DetailPage.data.user_admin)||false;
   }
   data: any = null;
   loadingMore: boolean = false;
@@ -33,8 +34,8 @@ export class RankingPage {
   }
 
   public refresh(event=null) {
-    this.core.createLoading().then(loading => {
-      if (this.communityAlias) {
+    if (this.communityAlias) {
+      this.core.createLoading().then(loading => {
         this.core.api.getCommunityRanking(this.communityAlias).subscribe(Res => {
           this.data = Res;
           loading.dismiss();
@@ -42,9 +43,9 @@ export class RankingPage {
           this.core.errorToast(loading, 'No tienes permiso para acceder a esta información, debes formar parte de la comunidad');
           this.router.navigateByUrl('info');
         });
-      } else this.core.errorToast(loading);
-    });
-    if (event && event.target && event.target.complete) event.target.complete();
+      });
+    } else this.router.navigateByUrl('info');
+    if (event != null) event.target.complete();
   }
 
   loadMore() {
@@ -55,10 +56,9 @@ export class RankingPage {
       this.core.api.getCommunityRanking(this.communityAlias).subscribe((Res:any) => {
         this.data.data.push(...Res.data);
         this.loadingMore = false;
-      }, () => {
+      }, err => {
         this.loadingMore = false;
-        this.core.errorToast();
-        this.router.navigateByUrl('info');
+        this.core.errorToast(null, err.error);
       });
     }
   }
@@ -78,7 +78,7 @@ export class RankingPage {
       link.click();
 
       window.URL.revokeObjectURL(url);
-    });
+    }).catch(err => this.core.errorToast(null, err.error));
   }
 
 }

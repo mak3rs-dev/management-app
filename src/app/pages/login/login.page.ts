@@ -30,11 +30,7 @@ export class LoginPage implements OnInit {
       this.core.auth.login(this.data, () => {
         loading.dismiss();
         this.core.navCtrl.navigateRoot('/');
-      }, err => {
-        // TODO: Handle errors properly
-        this.core.errorToast(loading);
-        console.error(err);
-      });
+      }, err => this.core.errorToast(loading, err.error, 3000));
     });
   }
 
