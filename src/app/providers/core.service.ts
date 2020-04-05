@@ -44,7 +44,7 @@ export class CoreService {
   public async errorToast(loading=null, message:any|string=null, duration=null) {
     if (loading) loading.dismiss();
 
-    if (typeof message != 'string') {
+    if (typeof message != 'string' && message!=null) {
       if (message.status && message.status==401 && this.isLoggedIn) {
         this.auth.logout(()=>this.navCtrl.navigateRoot('/login?msg=expired'));
       }

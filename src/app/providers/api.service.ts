@@ -18,6 +18,8 @@ export class ApiService {
   login = data => this.http.post(this.core.env.endpoint+'auth/login',data);
   me = () => this.http.get(this.core.env.endpoint+'auth/me', {headers:{Authorization: this.core.auth.token}});
   logout = () => this.http.get(this.core.env.endpoint+'auth/logout', {headers:{Authorization: this.core.auth.token}});
+  recoverPass = (email:string) => this.http.post(this.core.env.endpoint+'auth/recovery-password', {email:email}, {headers:{Authorization: this.core.auth.token}});
+  changePass = data => this.http.post(this.core.env.endpoint+'auth/recovery-hash', data, {headers:{Authorization: this.core.auth.token}});
 
   // COMMUNITIES
   getCommunities = (page:number=1) => this.http.get(this.core.env.endpoint+'communities/all?page='+page, (this.core.isLoggedIn)?{headers:{Authorization: this.core.auth.token}}:{});

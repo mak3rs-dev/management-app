@@ -21,7 +21,7 @@ export class DashboardPage implements OnInit {
       this.core.api.getCommunitiesByUser(page).subscribe(Res => {
         this.data = Res;
         loading.dismiss();
-      }, () => this.core.errorToast(loading));
+      }, err => this.core.errorToast(loading, err));
     });
   }
 
