@@ -42,7 +42,7 @@ export class UpdateStockComponentPage {
   }
 
   validate(cbOk: Function=null) {
-    if (this.newStock<this.getMin) {
+    if (parseInt(this.newStock.toString())<parseInt(this.getMin.toString())) {
       this.newStock = this.getMin;
       this.core.errorToast(null, 'La cantidad introducida no es válida (el stock actual no puede ser inferior a cero), por lo que se ha establecido al mínimo número posible');
     } else cbOk&&cbOk();
