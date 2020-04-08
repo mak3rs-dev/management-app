@@ -6,10 +6,11 @@ import { DetailPage } from './detail.page';
 import { InfoPageModule } from './tabs/info/info.module';
 import { PiecesPageModule } from './tabs/pieces/pieces.module';
 import { RankingPageModule } from './tabs/ranking/ranking.module';
+import { CollectPageModule } from './tabs/collect/collect.module';
 
 @NgModule({
   declarations: [
-    DetailPage,
+    DetailPage
   ],
   imports: [
     IonicModule,
@@ -17,6 +18,7 @@ import { RankingPageModule } from './tabs/ranking/ranking.module';
     InfoPageModule,
     PiecesPageModule,
     RankingPageModule,
+    CollectPageModule,
     DetailRoutingModule
   ]
 })

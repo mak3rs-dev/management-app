@@ -18,7 +18,13 @@ export class DashboardPage implements OnInit {
 
   refresh(page:number=1) {
     this.core.createLoading().then(loading => {
-      this.core.api.getCommunitiesByUser(page).subscribe(Res => {
+      this.core.api.getCommunitiesByUser(page).subscribe((Res:any) => {
+        Res.data.forEach(itm => {
+          itm.collect = null;
+          this.core.api.getCollectControl(itm.alias, null, 'COLLECT:REQUESTED').subscribe((res:any) => {
+            if (res.data && res.data[0]) itm.collect = res.data[0];
+          }, err => this.core.errorToast(null, err));
+        });
         this.data = Res;
         loading.dismiss();
       }, err => this.core.errorToast(loading, err));

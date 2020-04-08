@@ -30,6 +30,14 @@ export class ApiService {
   getCommunityStock = (alias:string, page:number=1) => this.http.get(this.core.env.endpoint+'communities/ranking/'+alias+'/stock?page='+page, {headers:{Authorization: this.core.auth.token}});
   getCommunityPieces = (uuid:string, page:number=1) => this.http.get(this.core.env.endpoint+'pieces/all?community='+uuid+'&page='+page, {headers:{Authorization: this.core.auth.token}});
 
+  // COLLECT CONTROL
+  addCollectControl = (data:any) => this.http.post(this.core.env.endpoint+'communities/collect/add', data, {headers:{Authorization: this.core.auth.token}});
+  updateCollectControl = (data:any) => this.http.put(this.core.env.endpoint+'communities/collect/update', data, {headers:{Authorization: this.core.auth.token}});
+  getCollectControl = (alias:string, uuid_user:string=null, status:string=null) => this.http.get(this.core.env.endpoint+'communities/collect/'+alias+'?user='+(uuid_user||'')+'&status_code='+(status||''), {headers:{Authorization: this.core.auth.token}});
+  getCollectControlCsv = (alias:string, uuid_user:string=null, status:string=null) => this.http.get(this.core.env.endpoint+'communities/collect/'+alias+'?user='+(uuid_user||'')+'&status_code='+(status||''), {
+    responseType: 'blob' as 'json',
+    headers: {Authorization: this.core.auth.token}
+  }).toPromise();
 
   // USER
   getCommunitiesByUser = (page:number=1) => this.http.get(this.core.env.endpoint+'users/communities?page='+page, {headers:{Authorization: this.core.auth.token}});

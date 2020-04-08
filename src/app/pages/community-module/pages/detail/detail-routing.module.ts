@@ -5,6 +5,7 @@ import { DetailPage } from './detail.page';
 import { InfoPage } from './tabs/info/info';
 import { PiecesPage } from './tabs/pieces/pieces';
 import { RankingPage } from './tabs/ranking/ranking';
+import { CollectPage } from './tabs/collect/collect';
 
 const routes: Routes = [{
   path: '',
@@ -14,6 +15,8 @@ const routes: Routes = [{
     { path: 'pieces', component: PiecesPage },
     { path: 'ranking', component: RankingPage },
     { path: 'stock', component: RankingPage },
+    { path: 'collect', component: CollectPage },
+    { path: 'collect/:status', component: CollectPage },
     { path: '', redirectTo: 'info', pathMatch: 'full' }
   ],
 }];

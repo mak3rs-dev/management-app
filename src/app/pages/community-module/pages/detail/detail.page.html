@@ -32,9 +32,13 @@
         <ion-label>Ranking</ion-label>
         <ion-icon name="ribbon-outline"></ion-icon>
       </ion-tab-button>
-      <ion-tab-button tab="stock" *ngIf="adminPermission">
+      <ion-tab-button tab="stock" [disabled]="!data.user" *ngIf="adminPermission">
         <ion-label>Stock</ion-label>
         <ion-icon name="file-tray-stacked-outline"></ion-icon>
+      </ion-tab-button>
+      <ion-tab-button [disabled]="!data.user" tab="collect">
+        <ion-label>Recogidas</ion-label>
+        <ion-icon name="car-outline"></ion-icon>
       </ion-tab-button>
     </ion-tab-bar>
   </ion-tabs>

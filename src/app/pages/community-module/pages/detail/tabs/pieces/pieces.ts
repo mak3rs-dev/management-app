@@ -22,7 +22,7 @@ export class PiecesPage {
 
   public refresh(page: number=1) {
     this.core.createLoading().then(loading => {
-      this.core.api.getCommunityPieces(DetailPage.data.alias, page).subscribe((Res:any) => {
+      this.core.api.getCommunityPieces(DetailPage.data.uuid, page).subscribe((Res:any) => {
         Res.data.forEach(itm => {
           itm.user = null;
           itm.uuid_community = DetailPage.data.uuid;

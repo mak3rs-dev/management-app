@@ -5,12 +5,12 @@
   </ion-refresher>
 
   <ion-list *ngIf="data" style="text-align: center;">
-    <ion-item *ngFor="let user of data.data; let i=index;">
-      <ion-avatar slot="start" style="font-size: 2em;">
+    <ion-item *ngFor="let user of data.data; let i=index;" [style.cursor]="query=='stock'?'pointer':''" (click)="(query=='stock')?createCollect(user):true">
+      <ion-avatar slot="start" style="font-size: 2em; min-width: 54px; text-align: center;" [class.elegible]="user.stock>=10">
         {{i+1}}
       </ion-avatar>
       <ion-label>
-        <h2>{{user.user_name}}   <small>{{user.user_alias}}</small> - MK#{{user.mak3r_num}}</h2>
+        <h2>{{user.user_name}}   <small [innerHTML]="user.user_alias|linkify"></small> - MK#{{user.mak3r_num}}</h2>
         <p>
           Total fabricadas: {{user.units_manufactured}}
           <ng-container *ngIf="adminPermission">| Total recogidas: {{user.units_collected}} | Stock: {{user.stock}}</ng-container>

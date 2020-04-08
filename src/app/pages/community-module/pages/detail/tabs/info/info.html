@@ -10,7 +10,7 @@
   </ion-fab>
 
   <ion-card *ngIf="data">
-    <img [src]="data.picture" style="width: 100%;">
+    <img *ngIf="data.picture" [src]="data.picture" style="width: 100%;">
     <ion-card-header *ngIf="!editMode">
       <ion-card-title>{{data.name}}</ion-card-title>
       <ion-card-subtitle>{{data.alias}}</ion-card-subtitle>
@@ -20,10 +20,8 @@
       <ion-input [autocomplete]="'nope'" [(ngModel)]="data.alias" placeholder="Alias"></ion-input>
     </ion-card-header>
 
-    <ion-card-content>
-      <ng-container *ngIf="!editMode">
-        {{data.description||'La comunidad no ha proporcionado información adicional'}}
-      </ng-container>
+    <ion-card-content style="white-space: pre-line;">
+      <p *ngIf="!editMode" [innerHTML]="(data.description|linkify)||'La comunidad no ha proporcionado información adicional'"></p>
       <ion-textarea *ngIf="editMode" [(ngModel)]="data.description" placeholder="Descripción o información a mostrar"></ion-textarea>
     </ion-card-content>
   </ion-card>

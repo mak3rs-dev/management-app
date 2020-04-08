@@ -10,9 +10,12 @@ import { ActivatedRoute } from '@angular/router';
 export class DetailPage implements OnInit {
 
   public static data: any = null;
+  public static get isMakerAdmin(): boolean {
+    return (DetailPage.data && DetailPage.data.user_admin)||false;
+  };
 
   get adminPermission(): boolean {
-    return (this.core.auth.user&&this.core.auth.user.role_name=='USER:ADMIN')||(DetailPage.data && DetailPage.data.user_admin)||false;
+    return (this.core.auth.user&&this.core.auth.user.role_name=='USER:ADMIN')||DetailPage.isMakerAdmin||false;
   }
   get data():any {
     return DetailPage.data;

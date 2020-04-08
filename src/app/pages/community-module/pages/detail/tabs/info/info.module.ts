@@ -1,9 +1,10 @@
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { InfoPage } from './info';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
-import { FormsModule } from '@angular/forms';
+import { InfoPage } from './info';
+import { PipesModule } from './../../../../../../pipes/pipes.module';
 
 @NgModule({
   declarations: [InfoPage],
@@ -11,6 +12,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     FormsModule,
     IonicModule,
+    PipesModule
   ],
 })
 export class InfoPageModule {}

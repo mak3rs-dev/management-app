@@ -3,6 +3,7 @@ import { CoreService } from 'src/app/providers/core.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DetailPage } from '../../detail.page';
+import { EditcollectComponentPage } from 'src/app/pages/community-module/components/editcollect/editcollect';
 
 @Component({
   selector: 'page-ranking',
@@ -14,7 +15,7 @@ export class RankingPage {
   @ViewChild('downloadLink', {static:true}) private downloadLink: ElementRef;
 
   get adminPermission(): boolean {
-    return (this.core.auth.user&&this.core.auth.user.role_name=='USER:ADMIN')||(DetailPage.data && DetailPage.data.user_admin)||false;
+    return (this.core.auth.user&&this.core.auth.user.role_name=='USER:ADMIN')||DetailPage.isMakerAdmin||false;
   }
   data: any = null;
   query: 'ranking'|'stock' = 'ranking';
@@ -68,6 +69,24 @@ export class RankingPage {
       });
     }
   }
+
+  createCollect = (user) => EditcollectComponentPage.Open({
+    community: DetailPage.data.uuid,
+    community_alias: DetailPage.data.alias,
+    user: user.user_uuid,
+    user_name: user.user_name,
+    status_code: "COLLECT:REQUESTED",
+
+    address: user.user_address,
+    address_description: user.user_address_description,
+    location: user.user_location,
+    province: user.user_province,
+    state: user.user_state,
+    country: user.user_country,
+    cp: user.user_cp,
+
+    pieces: []
+  }, this.core, () => this.refresh());
 
   csvExport() {
     this.http.get<Blob>(this.core.env.endpoint+'communities/ranking/'+this.communityAlias+'/export', {
