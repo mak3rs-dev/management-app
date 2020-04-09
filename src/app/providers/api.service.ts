@@ -28,7 +28,7 @@ export class ApiService {
   joinCommunity = (uuid:string) => this.http.post(this.core.env.endpoint+'communities/join', {community: uuid}, (this.core.isLoggedIn)?{headers:{Authorization: this.core.auth.token}}:{});
   getCommunityRanking = (alias:string, page:number=1) => this.http.get(this.core.env.endpoint+'communities/ranking/'+alias+'?page='+page, {headers:{Authorization: this.core.auth.token}});
   getCommunityStock = (alias:string, page:number=1) => this.http.get(this.core.env.endpoint+'communities/ranking/'+alias+'/stock?page='+page, {headers:{Authorization: this.core.auth.token}});
-  getCommunityPieces = (uuid:string, page:number=1) => this.http.get(this.core.env.endpoint+'pieces/all?community='+uuid+'&page='+page, {headers:{Authorization: this.core.auth.token}});
+  getCommunityPieces = (uuid:string, type:null|'piece'|'material'='piece', page:number=1) => this.http.get(this.core.env.endpoint+'pieces/all?community='+uuid+'&type_piece='+type+'&page='+page, {headers:{Authorization: this.core.auth.token}});
 
   // COLLECT CONTROL
   addCollectControl = (data:any) => this.http.post(this.core.env.endpoint+'communities/collect/add', data, {headers:{Authorization: this.core.auth.token}});
@@ -40,9 +40,12 @@ export class ApiService {
   }).toPromise();
 
   // USER
+  getCommunityPiecesByUser = (uuid:string, page:number=1, user:string='') => this.http.get(this.core.env.endpoint+'pieces/all?type_piece=piece&community='+uuid+'&page='+page+'&user='+user, {headers:{Authorization: this.core.auth.token}});
   getCommunitiesByUser = (page:number=1) => this.http.get(this.core.env.endpoint+'users/communities?page='+page, {headers:{Authorization: this.core.auth.token}});
   getRankingByUserPiece = (alias:string, user:string, piece:string) => this.http.get(this.core.env.endpoint+'communities/ranking/'+alias+'?piece='+piece+'&user='+user, {headers:{Authorization: this.core.auth.token}});
-  putNewPieceUnits = (uuid_community:string, uuid_piece:string, units:number) => this.http.post(this.core.env.endpoint+'/communities/piece/add-or-update', {uuid_community: uuid_community,uuid_piece: uuid_piece,units: units}, {headers:{Authorization: this.core.auth.token}});
+  putNewPieceUnits = (uuid_community:string, uuid_piece:string, units:number) => this.http.post(this.core.env.endpoint+'communities/piece/add-or-update', {uuid_community: uuid_community,uuid_piece: uuid_piece,units: units}, {headers:{Authorization: this.core.auth.token}});
+  putNewMaterialUnits = (uuid_community:string, uuid_piece:string, units:number) => this.http.post(this.core.env.endpoint+'communities/materials/add-or-update', {uuid_community: uuid_community,uuid_piece: uuid_piece,units: units}, {headers:{Authorization: this.core.auth.token}});
+  getMaterialUnits = (alias:string, uuid_piece:string, user:string='') => this.http.get(this.core.env.endpoint+'communities/materials/'+alias+'?piece='+uuid_piece+'&user='+user, {headers:{Authorization: this.core.auth.token}});
 
 
 }

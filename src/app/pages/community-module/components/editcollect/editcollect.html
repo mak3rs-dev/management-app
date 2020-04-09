@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Crear recogida</ion-title>
+    <ion-title *ngIf="data.admin">{{(!data.id)?'Crear recogida':'Editar recogida'}}</ion-title>
+    <ion-title *ngIf="!data.admin">Marcar recogida como enviada</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismiss()">
         CANCELAR
@@ -16,71 +17,99 @@
 
   <form #registerForm="ngForm"  class="ion-padding" (submit)="save()">
 
-    <h2>Solicitando recogida para {{data.user_name}}</h2>
+    <h2>Recogida para {{data.user_name}}{{(data.mak3r_num)?' - MK#'+data.mak3r_num:''}}</h2>
 
-    <ng-container *ngFor="let piece of data.pieces">
-      <ion-card *ngIf="piece.units!='0'" style="display: flex; margin: 0 0 10px 0;">
-        <img [src]="piece.picture||'/assets/icon/favicon.png'" style="max-width: 100px; max-height: 100px; padding: 10px;">
-        <ion-card-header style="width: 100%;">
-          <ion-card-title>{{piece.name}}</ion-card-title>
-          <ion-card-subtitle>
-            <ng-container *ngIf="piece">
-              Fabricadas: {{piece.units_manufactured}} | Entregadas: {{piece.units_collected}} | Stock: {{piece.stock}}
-            </ng-container>
-            <ion-item>
-              <ion-label>Cantidad solicitada</ion-label>
-              <ion-input [name]="'units'+piece.uuid" type="number" [min]="0" [max]="piece.stock" [(ngModel)]="piece.units"></ion-input>
+    <ion-list style="margin-bottom: 5px;">
+      <ion-list-header><h3>Piezas</h3></ion-list-header>
+      <ng-container *ngFor="let piece of data.pieces">
+        <ion-card *ngIf="piece.units!='0'" style="display: flex; margin: 0 0 10px 0;">
+          <img [src]="piece.picture||'/img/placeholder.jpg'" style="max-width: 100px; max-height: 100px; padding: 10px;">
+          <ion-card-header style="width: 100%;">
+            <ion-card-title>
+              {{piece.name}}
+              <ion-button *ngIf="piece.validated_at" fill="outline" size="small" color="success" style="transform: translateY(-5px)">VALIDADA</ion-button>
+            </ion-card-title>
+            <ion-card-subtitle>
+              <ng-container *ngIf="piece">
+                Fabricadas: {{piece.units_manufactured}} | Entregadas: {{piece.units_collected}} | Stock: {{piece.stock}}
+              </ng-container>
+              <ion-item>
+                <ion-label>Cantidad solicitada</ion-label>
+                <ion-input [name]="'units'+piece.uuid" type="number" [min]="0" [max]="piece.stock" [(ngModel)]="piece.units"></ion-input>
+              </ion-item>
+              <small *ngIf="data.admin">* El maker podrá reemplazar este número una vez realice la entrega</small>
+            </ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ng-container>
+      <ng-container *ngIf="stockAvailable">
+        <ion-list-header>
+          <ion-label>Otras piezas no solicitadas en stock</ion-label>
+          <ion-button fill="outline" (click)="showAvailable=!showAvailable">{{showAvailable?'OCULTAR':'MOSTRAR'}}</ion-button>
+        </ion-list-header>
+        <ng-container *ngIf="showAvailable">
+          <ng-container *ngFor="let piece of data.pieces">
+            <ion-item *ngIf="piece.units==0 && piece.stock!=0" [style.cursor]="'pointer'" (click)="piece.units = piece.stock">
+              <ion-thumbnail><img [src]="piece.picture||'/img/placeholder.jpg'" style="max-width: 100px; max-height: 100px; padding: 10px;"></ion-thumbnail>
+              <ion-label>{{piece.name}}</ion-label>
             </ion-item>
-            <small>* El maker podrá reemplazar este número una vez realice la entrega</small>
-          </ion-card-subtitle>
-        </ion-card-header>
-      </ion-card>
-    </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ion-list>
 
-    <ion-item>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-label>Dirección<ion-text color="danger">*</ion-text></ion-label>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-input [(ngModel)]="data.address" placeholder="Dirección" name="address"></ion-input>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-input [(ngModel)]="data.location" placeholder="Localidad" name="location"></ion-input>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-input [(ngModel)]="data.province" placeholder="Provincia" name="province"></ion-input>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-input [(ngModel)]="data.state" placeholder="Comunidad autónoma" name="state"></ion-input>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-input [(ngModel)]="data.country" placeholder="País" name="country"></ion-input>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-input [(ngModel)]="data.cp" placeholder="Código Postal" name="cp"></ion-input>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-textarea [(ngModel)]="data.address_description" placeholder="Comentario adicional" name="address_description"></ion-textarea>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
+    <ion-list *ngIf="this.data.admin">
+      <ion-item>
+        <ion-label>Estado</ion-label>
+        <ion-select [(ngModel)]="data.status_code" name="status" interface="popover">
+          <ion-select-option *ngFor="let item of statuses" [value]="prettyStatusMap[item.code]">{{item.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-label>Dirección<ion-text color="danger">*</ion-text></ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-input [(ngModel)]="data.address" placeholder="Dirección" name="address"></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-input [(ngModel)]="data.location" placeholder="Localidad" name="location"></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-input [(ngModel)]="data.province" placeholder="Provincia" name="province"></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-input [(ngModel)]="data.state" placeholder="Comunidad autónoma" name="state"></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-input [(ngModel)]="data.country" placeholder="País" name="country"></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-input [(ngModel)]="data.cp" placeholder="Código Postal" name="cp"></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-textarea [(ngModel)]="data.address_description" placeholder="Comentario adicional" name="address_description"></ion-textarea>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list>
 
     <div class="ion-padding" *ngIf="false">
       <ion-button expand="block" type="submit" class="ion-no-margin">Crear recogida</ion-button>

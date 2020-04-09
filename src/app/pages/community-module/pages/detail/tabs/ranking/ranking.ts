@@ -71,6 +71,8 @@ export class RankingPage {
   }
 
   createCollect = (user) => EditcollectComponentPage.Open({
+    admin: this.adminPermission,
+
     community: DetailPage.data.uuid,
     community_alias: DetailPage.data.alias,
     user: user.user_uuid,

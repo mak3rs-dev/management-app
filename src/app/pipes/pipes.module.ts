@@ -2,17 +2,19 @@ import { NgModule } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { LinkifyPipe } from './linkify.pipe';
+import { DatetimePipe } from './datetime.pipe';
+
+const PIPES = [
+  LinkifyPipe,
+  DatetimePipe
+];
 
 @NgModule({
-  declarations: [
-    LinkifyPipe
-  ],
+  declarations: [...PIPES],
   imports: [
     IonicModule,
     CommonModule
   ],
-  exports: [
-      LinkifyPipe
-  ]
+  exports: [...PIPES]
 })
 export class PipesModule {}

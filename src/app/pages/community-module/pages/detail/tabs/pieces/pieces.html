@@ -1,10 +1,14 @@
 <ion-content class="ion-padding">
 
-  <ng-container *ngIf="data">
-    <ion-card *ngFor="let piece of data.data" style="display: flex;" [style.cursor]="piece.user!==null?'pointer':'unset'" (click)="piece.user!==null&&clickPiece(piece)">
+  <ng-container *ngIf="dataPieces">
+    <h2>Piezas</h2>
+    <ion-card *ngFor="let piece of dataPieces.data" style="display: flex;" [style.cursor]="piece.user!==null?'pointer':'unset'" (click)="piece.user!==null&&clickPiece(piece)">
       <img [src]="piece.picture||'/assets/icon/favicon.png'" style="max-width: 100px; max-height: 100px; padding: 10px;">
       <ion-card-header>
-        <ion-card-title>{{piece.name}}</ion-card-title>
+        <ion-card-title>
+          {{piece.name}}
+          <ion-button *ngIf="piece.validated_at" fill="outline" size="small" color="success" style="transform: translateY(-5px)">VALIDADA</ion-button>
+        </ion-card-title>
         <ion-card-subtitle>
           Comunidad -> Fabricadas: {{piece.units_manufactured}} | Recibidas: {{piece.units_collected}} | Stock: {{piece.units_manufactured-piece.units_collected}}
         </ion-card-subtitle>
@@ -21,6 +25,30 @@
         {{data.description}}
       </ion-card-content> -->
     </ion-card>
+  </ng-container>
+
+  <ng-container *ngIf="dataMaterials">
+    <h2>Materiales</h2>
+    <ion-card *ngFor="let piece of dataMaterials.data" style="display: flex;" [style.cursor]="piece.user!==null?'pointer':'unset'" (click)="piece.user!==null&&clickMaterial(piece)">
+      <img [src]="piece.picture||'/assets/img/placeholder.jpg'" style="max-width: 100px; max-height: 100px; padding: 10px;">
+      <ion-card-header>
+        <ion-card-title>
+          {{piece.name}}
+        </ion-card-title>
+        <ion-card-subtitle>
+          <span *ngIf="piece.user===null"><ion-spinner></ion-spinner> Cargando...</span>
+          <span *ngIf="piece.user!==null && piece.user===undefined">Parece que aún no has solicitado ninguna unidad</span>
+          <ng-container *ngIf="piece.user">
+            Tú -> Solicitados: {{piece.user.units_request||0}} | Recibidos: {{piece.user.units_delivered||0}}
+          </ng-container>
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <!-- <ion-card-content *ngIf="data.description">
+        {{data.description}}
+      </ion-card-content> -->
+    </ion-card>
+
   </ng-container>
 
   <!-- TODO: Pending pagination -->

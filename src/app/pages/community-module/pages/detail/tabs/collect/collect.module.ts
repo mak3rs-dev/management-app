@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 
 import { FormsModule } from '@angular/forms'
 import { CollectPage } from './collect';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 import { DetailRoutingModule } from '../../detail-routing.module';
 
 @NgModule({
@@ -13,6 +14,7 @@ import { DetailRoutingModule } from '../../detail-routing.module';
     CommonModule,
     FormsModule,
     IonicModule,
+    PipesModule,
     DetailRoutingModule
   ],
 })

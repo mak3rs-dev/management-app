@@ -38,7 +38,7 @@
           <h2>{{collect.user_name}}   <small>{{collect.user_alias}}</small> - MK#{{collect.mak3r_num}}</h2>
           <p>
             Total piezas: {{collect.units_collected}} | Total materiales: {{collect.units_delivered}}<br>
-            Fecha: {{collect.created_at}}
+            Fecha: {{collect.created_at|datetime}}
           </p>
         </ion-label>
       </ion-item>

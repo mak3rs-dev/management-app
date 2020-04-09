@@ -11,14 +11,45 @@ import { CoreService } from 'src/app/providers/core.service';
 export class EditcollectComponentPage {
 
   data: any = null;
-  // pieces: any[] = [];
+  statuses: any[] = [
+    { code: 'requested', name: 'Recogida solicitada', icon: 'mail-unread-outline'},
+    { code: 'delivered', name: 'Recogida entregada', icon: 'mail-outline'},
+    { code: 'received', name: 'Recogida recibida', icon: 'mail-open-outline'}
+  ];
+  prettyStatusMap = {requested: 'COLLECT:REQUESTED', delivered: 'COLLECT:DELIVERED', received: 'COLLECT:RECEIVED'};
   loadingPieces: boolean = true;
+
+  showAvailable: boolean = false;
+  get stockAvailable(): boolean {
+    let output = false;
+    if (this.data.pieces && this.data.pieces.length) {
+      this.data.pieces.forEach(itm => {
+        if (!output && itm.units!=undefined && itm.stock!=undefined && itm.units == 0 && itm.stock!=0) {
+          output = true;
+        }
+      });
+    }
+
+    return output;
+  };
 
   constructor(private core: CoreService, navParams: NavParams) {
     this.data = navParams.data.data;
     console.log(this.data);
-    if (!this.data.pieces.length) this.fetchPieces();
-    if (this.data.id) this.fetchPiecesRanking();
+    this.fetchPieces(() => {
+      // Important. Not sure about ranking finished loading, only pieces.
+      this.performAutoActions();
+    });
+    if (this.data.pieces.length) this.fetchPiecesRanking();
+  }
+
+  performAutoActions() {
+    if (this.data.status_code == this.prettyStatusMap.requested && !this.data.admin) {
+      this.data.status_code = this.prettyStatusMap.delivered;
+    }
+    if (this.data.status_code == this.prettyStatusMap.delivered) {
+      this.data.status_code = this.prettyStatusMap.received;
+    }
   }
 
   fetchPiecesRanking() {
@@ -31,33 +62,43 @@ export class EditcollectComponentPage {
     });
   }
 
-  fetchPieces(page=1) {
+  fetchPieces(cb: Function = null, page=1, autoAddUnits=null) {
+    if (autoAddUnits===null) autoAddUnits = (this.data.pieces.length)?false:true;
     this.loadingPieces = true;
-    this.core.api.getCommunityPieces(this.data.community, page).subscribe((Res:any) => {
+    this.core.api.getCommunityPiecesByUser(this.data.community, page, this.data.user).subscribe((Res:any) => {
       Res.data.forEach(itm => {
-        itm.user = null;
-        itm.uuid_community = this.data.community;
-        this.core.api.getRankingByUserPiece(this.data.community_alias, this.data.user, itm.uuid).subscribe(ResRanking => {
-          itm.user = (<any>ResRanking).data[0];
-          // Comment next line to not automatically append data
-          this.data.pieces.push({
-            picture:itm.picture,
-            name:itm.name,
-            uuid:itm.uuid,
-            units_manufactured:itm.user.units_manufactured,
-            units_collected:itm.user.units_collected,
-            units:itm.user.stock,
-            stock:itm.user.stock
-          });
-        }, err=>{
-          this.loadingPieces = false;
-          this.core.errorToast(null, err);
+        let foundLocal = false;
+        this.data.pieces.forEach(itmlocal => {
+          if (itm.uuid==itmlocal.uuid) {
+            foundLocal = true;
+            itmlocal.validated_at = itm.validated_at;
+          }
         });
+        if (!foundLocal) {
+          itm.user = null;
+          itm.uuid_community = this.data.community;
+          this.core.api.getRankingByUserPiece(this.data.community_alias, this.data.user, itm.uuid).subscribe(ResRanking => {
+            itm.user = (<any>ResRanking).data[0];
+            this.data.pieces.push({
+              picture:itm.picture,
+              name:itm.name,
+              uuid:itm.uuid,
+              validated_at:itm.validated_at,
+              units_manufactured:itm.user.units_manufactured,
+              units_collected:itm.user.units_collected,
+              units:(autoAddUnits)?itm.user.stock:0,
+              stock:itm.user.stock
+            });
+          }, err => this.core.errorToast(null, err));
+        }
       });
       // this.pieces.push(...Res.data);
       if (Res.current_page!=Res.last_page) {
-        this.fetchPieces(parseInt(Res.current_page)+1);
-      } else this.loadingPieces = false;
+        this.fetchPieces(cb, parseInt(Res.current_page)+1, autoAddUnits);
+      } else {
+        this.loadingPieces = false;
+        if (cb) cb();
+      }
     }, err => {
       this.loadingPieces = false;
       this.core.errorToast(null, err)

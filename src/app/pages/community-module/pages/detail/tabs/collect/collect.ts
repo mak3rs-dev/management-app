@@ -92,9 +92,9 @@ export class CollectPage {
         p.uuid = p.piece.uuid;
         p.picture = p.piece.picture;
         p.name = p.piece.name;
-        // units_manufactured
-        // units_collected
       });
+      collect.admin = this.adminPermission;
+      collect.community = DetailPage.data.uuid;
       collect.community_alias = DetailPage.data.alias;
       collect.collect = collect.id;
       collect.user = collect.user_uuid;
