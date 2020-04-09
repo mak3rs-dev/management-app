@@ -93,6 +93,10 @@ export class CollectPage {
         p.picture = p.piece.picture;
         p.name = p.piece.name;
       });
+      collect.materials.forEach(p => {
+        p.uuid = p.material_request.piece.uuid;
+        p.units = p.units_delivered;
+      });
       collect.admin = this.adminPermission;
       collect.community = DetailPage.data.uuid;
       collect.community_alias = DetailPage.data.alias;

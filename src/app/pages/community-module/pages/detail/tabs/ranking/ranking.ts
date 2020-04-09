@@ -87,7 +87,8 @@ export class RankingPage {
     country: user.user_country,
     cp: user.user_cp,
 
-    pieces: []
+    pieces: [],
+    materials: []
   }, this.core, () => this.refresh());
 
   csvExport() {

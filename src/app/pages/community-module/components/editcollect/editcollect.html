@@ -23,35 +23,75 @@
       <ion-list-header><h3>Piezas</h3></ion-list-header>
       <ng-container *ngFor="let piece of data.pieces">
         <ion-card *ngIf="piece.units!='0'" style="display: flex; margin: 0 0 10px 0;">
-          <img [src]="piece.picture||'/img/placeholder.jpg'" style="max-width: 100px; max-height: 100px; padding: 10px;">
+          <img [src]="piece.picture||'/assets/img/placeholder.jpg'" style="max-width: 100px; max-height: 100px; padding: 10px;">
           <ion-card-header style="width: 100%;">
             <ion-card-title>
               {{piece.name}}
               <ion-button *ngIf="piece.validated_at" fill="outline" size="small" color="success" style="transform: translateY(-5px)">VALIDADA</ion-button>
             </ion-card-title>
             <ion-card-subtitle>
-              <ng-container *ngIf="piece">
+              <ng-container>
                 Fabricadas: {{piece.units_manufactured}} | Entregadas: {{piece.units_collected}} | Stock: {{piece.stock}}
               </ng-container>
               <ion-item>
                 <ion-label>Cantidad solicitada</ion-label>
                 <ion-input [name]="'units'+piece.uuid" type="number" [min]="0" [max]="piece.stock" [(ngModel)]="piece.units"></ion-input>
               </ion-item>
-              <small *ngIf="data.admin">* El maker podrá reemplazar este número una vez realice la entrega</small>
+              <small *ngIf="data.admin">* El maker podrá reemplazar este número al realizar la entrega</small>
             </ion-card-subtitle>
           </ion-card-header>
         </ion-card>
       </ng-container>
-      <ng-container *ngIf="stockAvailable">
+      <ng-container *ngIf="pieceStockAvailable">
         <ion-list-header>
           <ion-label>Otras piezas no solicitadas en stock</ion-label>
-          <ion-button fill="outline" (click)="showAvailable=!showAvailable">{{showAvailable?'OCULTAR':'MOSTRAR'}}</ion-button>
+          <ion-button fill="outline" (click)="showAvailablePieces=!showAvailablePieces">{{showAvailablePieces?'OCULTAR':'MOSTRAR'}}</ion-button>
         </ion-list-header>
-        <ng-container *ngIf="showAvailable">
+        <ng-container *ngIf="showAvailablePieces">
           <ng-container *ngFor="let piece of data.pieces">
             <ion-item *ngIf="piece.units==0 && piece.stock!=0" [style.cursor]="'pointer'" (click)="piece.units = piece.stock">
-              <ion-thumbnail><img [src]="piece.picture||'/img/placeholder.jpg'" style="max-width: 100px; max-height: 100px; padding: 10px;"></ion-thumbnail>
+              <ion-thumbnail><img [src]="piece.picture||'/assets/img/placeholder.jpg'" style="max-width: 100px; max-height: 100px; padding: 10px;"></ion-thumbnail>
               <ion-label>{{piece.name}}</ion-label>
+            </ion-item>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ion-list>
+
+    <ion-list style="margin-bottom: 5px;">
+      <ion-list-header><h3>Materiales</h3></ion-list-header>
+      <ng-container *ngFor="let material of data.materials">
+        <ion-card *ngIf="material.units!='0'" style="display: flex; margin: 0 0 10px 0;">
+          <img [src]="material.picture||'/assets/img/placeholder.jpg'" style="max-width: 100px; max-height: 100px; padding: 10px;">
+          <ion-card-header style="width: 100%;">
+            <ion-card-title>
+              {{material.name}}
+            </ion-card-title>
+            <ion-card-subtitle>
+              <ng-container>
+                Solicitadas: {{material.units_request||0}} | Recibidas: {{material.units_collected||0}} | Pendientes: {{material.units_pending||0}}
+              </ng-container>
+              <ion-item *ngIf="data.admin">
+                <ion-label>Cantidad a entregar</ion-label>
+                <ion-input [name]="'units'+material.uuid" type="number" [min]="0" [max]="material.units_pending" [(ngModel)]="material.units"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="!data.admin">
+                <ion-label>Recibirás {{material.units}} unidad{{(material.units>1)?'es':''}}</ion-label>
+              </ion-item>
+            </ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ng-container>
+      <ng-container *ngIf="materialStockAvailable">
+        <ion-list-header>
+          <ion-label>Otros materiales solicitados que no se proveerán</ion-label>
+          <ion-button fill="outline" (click)="showAvailableMaterials=!showAvailableMaterials">{{showAvailableMaterials?'OCULTAR':'MOSTRAR'}}</ion-button>
+        </ion-list-header>
+        <ng-container *ngIf="showAvailableMaterials">
+          <ng-container *ngFor="let material of data.materials">
+            <ion-item *ngIf="material.units==0 && material.stock!=0" [style.cursor]="'pointer'" (click)="material.units = material.units_pending">
+              <ion-thumbnail><img [src]="material.picture||'/assets/img/placeholder.jpg'" style="max-width: 100px; max-height: 100px; padding: 10px;"></ion-thumbnail>
+              <ion-label>{{material.name}}</ion-label>
             </ion-item>
           </ng-container>
         </ng-container>

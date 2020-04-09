@@ -15,7 +15,7 @@
   </ion-header>
 
   <ion-list *ngIf="data">
-    <ion-item *ngFor="let community of data.data" (click)="detail(community)">
+    <ion-item *ngFor="let community of data.data" (click)="detail(community)" [style.cursor]="'pointer'">
       <ion-label>{{community.name}}</ion-label>
     </ion-item>
   </ion-list>

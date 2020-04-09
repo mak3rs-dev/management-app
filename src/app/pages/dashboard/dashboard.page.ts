@@ -38,6 +38,10 @@ export class DashboardPage implements OnInit {
       p.picture = p.piece.picture;
       p.name = p.piece.name;
     });
+    community.collect.materials.forEach(p => {
+      p.uuid = p.material_request.piece.uuid;
+      p.units = p.units_delivered;
+    });
     community.collect.admin = false;
     community.collect.community = community.uuid;
     community.collect.community_alias = community.alias;

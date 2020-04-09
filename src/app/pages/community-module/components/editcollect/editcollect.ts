@@ -19,8 +19,8 @@ export class EditcollectComponentPage {
   prettyStatusMap = {requested: 'COLLECT:REQUESTED', delivered: 'COLLECT:DELIVERED', received: 'COLLECT:RECEIVED'};
   loadingPieces: boolean = true;
 
-  showAvailable: boolean = false;
-  get stockAvailable(): boolean {
+  showAvailablePieces: boolean = false;
+  get pieceStockAvailable(): boolean {
     let output = false;
     if (this.data.pieces && this.data.pieces.length) {
       this.data.pieces.forEach(itm => {
@@ -32,15 +32,28 @@ export class EditcollectComponentPage {
 
     return output;
   };
+  showAvailableMaterials: boolean = false;
+  get materialStockAvailable(): boolean {
+    let output = false;
+    if (this.data.materials && this.data.materials.length) {
+      this.data.materials.forEach(itm => {
+        if (!output && itm.units!=undefined && itm.units_pending!=undefined && itm.units == 0 && itm.units_pending!=0) {
+          output = true;
+        }
+      });
+    }
+
+    return output;
+  };
 
   constructor(private core: CoreService, navParams: NavParams) {
     this.data = navParams.data.data;
     console.log(this.data);
-    this.fetchPieces(() => {
-      // Important. Not sure about ranking finished loading, only pieces.
-      this.performAutoActions();
-    });
+    this.fetchPieces();
     if (this.data.pieces.length) this.fetchPiecesRanking();
+    this.fetchMaterials();
+    if (this.data.materials.length) this.fetchMaterialsRanking();
+    this.performAutoActions();
   }
 
   performAutoActions() {
@@ -63,7 +76,7 @@ export class EditcollectComponentPage {
   }
 
   fetchPieces(cb: Function = null, page=1, autoAddUnits=null) {
-    if (autoAddUnits===null) autoAddUnits = (this.data.pieces.length)?false:true;
+    if (autoAddUnits===null) autoAddUnits = (this.data.pieces.length || this.data.id)?false:true;
     this.loadingPieces = true;
     this.core.api.getCommunityPiecesByUser(this.data.community, page, this.data.user).subscribe((Res:any) => {
       Res.data.forEach(itm => {
@@ -95,6 +108,58 @@ export class EditcollectComponentPage {
       // this.pieces.push(...Res.data);
       if (Res.current_page!=Res.last_page) {
         this.fetchPieces(cb, parseInt(Res.current_page)+1, autoAddUnits);
+      } else {
+        this.loadingPieces = false;
+        if (cb) cb();
+      }
+    }, err => {
+      this.loadingPieces = false;
+      this.core.errorToast(null, err)
+    });
+  }
+
+  fetchMaterialsRanking() {
+    this.data.materials.forEach(itm => {
+      this.core.api.getMaterialUnits(this.data.community_alias, itm.uuid, (this.data.admin)?this.data.user:'').subscribe(ResRanking => {
+        itm.units_request = (<any>ResRanking).data[0].units_request;
+        itm.units_delivered = (<any>ResRanking).data[0].units_delivered;
+        itm.units_pending = (<any>ResRanking).data[0].units_request-(<any>ResRanking).data[0].units_delivered;
+      }, err => this.core.errorToast(null, err));
+    });
+  }
+
+  fetchMaterials(cb: Function = null, page=1, autoAddUnits=null) {
+    if (autoAddUnits===null) autoAddUnits = (this.data.materials.length || this.data.id)?false:true;
+    this.loadingPieces = true;
+    this.core.api.getCommunityPieces(this.data.community, 'material', this.data.user).subscribe((Res:any) => {
+      Res.data.forEach(itm => {
+        let foundLocal = false;
+        this.data.materials.forEach(itmlocal => {
+          if (itm.uuid==itmlocal.uuid) {
+            foundLocal = true;
+          }
+        });
+        if (!foundLocal) {
+          itm.user = null;
+          itm.uuid_community = this.data.community;
+          this.core.api.getMaterialUnits(this.data.community_alias, itm.uuid, (this.data.admin)?this.data.user:'').subscribe(ResRanking => {
+            itm.user = (<any>ResRanking).data[0];
+            this.data.materials.push({
+              picture:itm.picture,
+              name:itm.name,
+              uuid:itm.uuid,
+              units_request:itm.user.units_request,
+              units_delivered:itm.user.units_delivered,
+              units_pending:itm.user.units_request-itm.user.units_delivered,
+
+              units:(autoAddUnits)?(itm.user.units_request-itm.user.units_delivered):0
+            });
+          }, err => this.core.errorToast(null, err));
+        }
+      });
+
+      if (Res.current_page!=Res.last_page) {
+        this.fetchMaterials(cb, parseInt(Res.current_page)+1, autoAddUnits);
       } else {
         this.loadingPieces = false;
         if (cb) cb();
