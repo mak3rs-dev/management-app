@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { ToastController, LoadingController, NavController, AlertController, ModalController } from '@ionic/angular';
 import { AuthService } from './auth/auth.service';
+import { PrivacyComponentPage } from '../components/privacy/privacy';
 
 @Injectable({
   providedIn: 'root'
@@ -41,12 +42,20 @@ export class CoreService {
     })).present();
   }
 
+  privacyOpen:boolean = false;
+
   public async errorToast(loading=null, message:any|string=null, duration=null) {
     if (loading) loading.dismiss();
 
     if (typeof message != 'string' && message!=null) {
       if (message.status && message.status==401 && this.isLoggedIn) {
         this.auth.logout(()=>this.navCtrl.navigateRoot('/login?msg=expired'));
+      }
+      if (message.error && message.error.code==-100) {
+        if (!this.privacyOpen) {
+          this.privacyOpen = true;
+          PrivacyComponentPage.Open(true, this, () => this.privacyOpen=false);
+        }
       }
       message = this.fetchErrMsg(message.error);
     }

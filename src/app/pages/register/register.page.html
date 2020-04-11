@@ -91,8 +91,18 @@
       </ion-grid>
     </ion-item>
 
+    <ion-list>
+      <ion-item (click)="($event.target!=privacylink && $event.target!=checkbox) ? data.privacy_policy_accept = !data.privacy_policy_accept:false">
+        <ion-label style="margin-left: 5px;">
+          He leído y acepto la <a #privacylink style="cursor: pointer" (click)="openPrivacyPolicy()">política de privacidad</a>
+        </ion-label>
+        <ion-checkbox #checkbox style="cursor:pointer; pointer-events:none;" [(ngModel)]="data.privacy_policy_accept" name="privacy_policy_accept" slot="start"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+
+
     <div class="ion-padding">
-      <ion-button expand="block" type="submit" class="ion-no-margin">Crear cuenta</ion-button>
+      <ion-button expand="block" type="submit" class="ion-no-margin" [disabled]="!data.privacy_policy_accept">Crear cuenta</ion-button>
     </div>
   </form>
 </ion-content>

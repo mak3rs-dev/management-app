@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Política de privacidad</ion-title>
+    <ion-buttons slot="end" *ngIf="mustConfirm">
+      <ion-button color="danger" (click)="decline()">
+        DECLINAR
+      </ion-button>
+      <ion-button color="success" (click)="confirm()">
+        ACEPTAR
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" *ngIf="!mustConfirm">
+      <ion-button (click)="dismiss()">
+        OK
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div>
+    <u><b>CESIÓN DE DATOS</b></u>
+    <p>
+      Queremos mantenerle informado del tratamiento que realizaremos de sus datos personales, garantizándole la protección de éstos conforme a la normativa vigente.
+    </p>
+    <p>
+      Los datos personales recogidos en esta aplicación, y todos los facilitados por usted van a ser incorporados en un fichero que la ASOCIACIÓN SOCIOCULTURAL UNO CERO UNO, con CIF G56071244, y domicilio social en C/ Secretario Carretero, 7, C.P.: 14004, Córdoba, utilizará con la finalidad de gestionar la logística del “PROYECTO “GRUPO DE VOLUTARIOS CV19CordobaMak3rs”
+    </p>
+    <p>
+      Asimismo, sus datos personales podrán ser cedidos a las Administraciones Públicas en cumplimiento de la normativa, en caso de ser requeridos por éstas.
+      De esta forma, DOY MI AUTORIZACIÓN EXPRESA, hasta la finalización del “PROYECTO “GRUPO DE VOLUTARIOS CV19CordobaMak3rs” A:
+      Que mis datos personales figuren incorporados en el fichero que la ASOCIACIÓN SOCIOCULTURAL UNO CERO UNO mantiene con finalidades de gestión del grupo de voluntarios “CV19CordobaMak3rs”
+      Que mis datos personales  sean cedidos por la ASOCIACIÓN SOCIOCULTURAL UNO CERO UNO a las Administraciones Públicas, en el caso de que sean requeridos por éstas, así como a otras entidades, públicas o privadas, que pudieran requerir de sus datos para su gestión.
+    </p>
+    <p>
+      Le rogamos, así mismo, que en el caso de producirse alguna modificación de sus datos, nos lo comunique por cualquiera de las vías puestas a disposición con la finalidad de mantener su información actualizada.
+    </p>
+    <p>
+      En cualquier caso, tiene derecho en cualquier momento a acceder, rectificar, opositar, o cancelar los datos referentes a su persona, incluidos en nuestro fichero solicitando los impresos a tal fin o por escrito dirigiéndose a la ASOCIACIÓN SOCIOCULTURAL UNO CERO UNO, con CIF G56071244, y domicilio social en C/ Secretario Carretero, 7, C.P.: 14004, Córdoba
+    </p>
+  </div>
+
+  <ion-row *ngIf="mustConfirm">
+    <ion-col style="text-align: right;">
+      <ion-button size="large" color="danger" (click)="decline()">Declinar</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button size="large" color="success" (click)="confirm()">Aceptar</ion-button>
+    </ion-col>
+  </ion-row>
+
+</ion-content>

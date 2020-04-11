@@ -20,6 +20,7 @@ import { AuthService } from './providers/auth/auth.service';
 import { CommunityModule } from './pages/community-module/community.module';
 import { E404Page } from './pages/404/404.page';
 import { RecoverPage } from './pages/recover/recover.page';
+import { ComponentsModule } from './components/components.module';
 
 const PAGES = [ LoginPage, RecoverPage, RegisterPage, DashboardPage, E404Page ];
 
@@ -32,7 +33,8 @@ const PAGES = [ LoginPage, RecoverPage, RegisterPage, DashboardPage, E404Page ];
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    CommunityModule
+    CommunityModule,
+    ComponentsModule
   ],
   providers: [
     StatusBar,
