@@ -1,0 +1,35 @@
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list *ngIf="data" style="text-align: center;">
+    <ion-item *ngFor="let user of data.data; let i=index;" [style.cursor]="query=='stock'?'pointer':''" (click)="(query=='stock')?createCollect(user):true">
+      <ion-avatar slot="start" style="font-size: 2em; min-width: 54px; text-align: center;" [class.elegible]="user.stock>=10">
+        {{i+1}}
+      </ion-avatar>
+      <ion-label>
+        <h2>{{user.user_name}}   <small [innerHTML]="user.user_alias|linkify"></small> - MK#{{user.mak3r_num}}</h2>
+        <p>
+          Total fabricadas: {{user.units_manufactured}}
+          <ng-container *ngIf="adminPermission">| Total recogidas: {{user.units_collected}} | Stock: {{user.stock}}</ng-container>
+        </p>
+        <p *ngIf="adminPermission && showAddresses">
+          {{user.user_address}} - {{user.user_location}} ({{user.user_cp}}) <br>
+          {{user.user_province}} - {{user.user_state}} - {{user.user_country}}
+        </p>
+      </ion-label>
+    </ion-item>
+    <ion-button (click)="loadMore()" fill="outline" style="margin-top: 15px;" *ngIf="data.data.length<data.total">
+      {{loadingMore?'Cargando...':'Cargar más'}}
+    </ion-button>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="adminPermission && query=='ranking'">
+    <ion-fab-button (click)="csvExport()">
+      <ion-icon name="save-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <a class="download-zip-link" #downloadLink style="display: none;"></a>
+</ion-content>

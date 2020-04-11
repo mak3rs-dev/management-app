@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Iniciar sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="logo">
+		<img src="/assets/img/loginIcon.png">
+	</div>
+
+  <form #registerForm="ngForm"  class="ion-padding" (submit)="login()">
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input [autocomplete]="'nope'" [(ngModel)]="data.email" [required]="true" name="email" type="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label type="password" position="floating">Contraseña</ion-label>
+      <ion-input (keydown.enter)="login()" [autocomplete]="'nope'" [(ngModel)]="data.password" [required]="true" type="password" name="password"></ion-input>
+    </ion-item>
+
+    <div class="ion-padding">
+      <ion-text>Si has olvidado tu contraseña, haz <a routerLink="/recover">click aquí</a> para restablecerla.</ion-text>
+      <br><br><br>
+      <ion-button expand="block" type="submit" class="ion-no-margin">Iniciar sesión</ion-button>
+    </div>
+  </form>
+
+</ion-content>

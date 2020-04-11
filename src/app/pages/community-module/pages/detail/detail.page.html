@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Comunidad {{data&&data.name}}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="join()" *ngIf="core.isLoggedIn && data && !data.user">
+        <ion-label>UNIRME A LA COMUNIDAD</ion-label>
+      </ion-button>
+      <ion-button [routerLink]="'/register'" *ngIf="!core.isLoggedIn && data && !data.user">
+        <ion-label>REGISTRARSE</ion-label>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-tabs *ngIf="data">
+    <ion-tab-bar slot="top">
+      <ion-tab-button tab="info">
+        <ion-label>Información</ion-label>
+        <ion-icon name="information-circle"></ion-icon>
+      </ion-tab-button>
+      <ion-tab-button [disabled]="!data.user" tab="pieces">
+        <ion-label>Piezas</ion-label>
+        <ion-icon name="cube-outline"></ion-icon>
+      </ion-tab-button>
+      <ion-tab-button [disabled]="!data.user" tab="ranking">
+        <ion-label>Ranking</ion-label>
+        <ion-icon name="ribbon-outline"></ion-icon>
+      </ion-tab-button>
+      <ion-tab-button tab="stock" [disabled]="!data.user" *ngIf="adminPermission">
+        <ion-label>Stock</ion-label>
+        <ion-icon name="file-tray-stacked-outline"></ion-icon>
+      </ion-tab-button>
+      <ion-tab-button [disabled]="!data.user" tab="collect">
+        <ion-label>Recogidas</ion-label>
+        <ion-icon name="car-outline"></ion-icon>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+
+  <ion-item *ngIf="!data">
+    <ion-label>Cargando...</ion-label>
+  </ion-item>
+
+</ion-content>

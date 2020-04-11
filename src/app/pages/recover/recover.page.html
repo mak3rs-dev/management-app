@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Recuperar contraseña</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="logo">
+		<ion-icon name="lock-closed-outline" style="font-size: 120px;"></ion-icon>
+	</div>
+
+  <form #registerForm="ngForm"  class="ion-padding" (submit)="!data.hash?requestMail():changePassword()">
+    <ion-item *ngIf="!data.hash">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input (keydown.enter)="!data.hash?requestMail():changePassword()" [autocomplete]="'nope'" [(ngModel)]="data.email" [required]="true" name="email" type="email"></ion-input>
+    </ion-item>
+
+    <ng-container *ngIf="data.hash">
+      <ion-item>
+        <ion-label type="password" position="floating">Nueva contraseña</ion-label>
+        <ion-input (keydown.enter)="!data.hash?requestMail():changePassword()" [autocomplete]="'nope'" [(ngModel)]="data.password" [required]="true" type="password" name="password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label type="password" position="floating">Confirmar contraseña</ion-label>
+        <ion-input (keydown.enter)="!data.hash?requestMail():changePassword()" [autocomplete]="'nope'" [(ngModel)]="data.password_confirm" [required]="true" type="password" name="password"></ion-input>
+      </ion-item>
+    </ng-container>
+
+    <div class="ion-padding">
+      <ion-button expand="block" type="submit" class="ion-no-margin">{{data.hash?'Cambiar contraseña':'Enviar correo de recuperación'}}</ion-button>
+    </div>
+  </form>
+
+</ion-content>

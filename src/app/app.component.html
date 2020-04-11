@@ -3,27 +3,64 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>Inbox</ion-list-header>
-          <ion-note>hi@ionicframework.com</ion-note>
+          <ion-list-header>
+            Mak3rs Management
+            <ion-button *ngIf="!core.env.production">BETA</ion-button>
+          </ion-list-header>
+          <ion-note>Community management app for mak3rs, by mak3rs 🎉</ion-note>
 
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
-              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
+          <ng-container *ngFor="let p of appPages">
+            <ion-menu-toggle auto-hide="false" *ngIf="p.requireLogin ? core.isLoggedIn:true">
+              <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+                <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+                <ion-label>{{ p.title }}</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ng-container>
+
+          <ng-container *ngIf="!core.isLoggedIn">
+            <ion-menu-toggle auto-hide="false">
+              <ion-item routerDirection="root" routerLink="/login" lines="none" detail="false" routerLinkActive="selected">
+                <ion-icon slot="start" ios="key-outline'" md="key-sharp"></ion-icon>
+                <ion-label>Iniciar sesión</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+            <ion-menu-toggle auto-hide="false">
+              <ion-item routerDirection="root" routerLink="/register" lines="none" detail="false" routerLinkActive="selected">
+                <ion-icon slot="start" ios="person-add-outline'" md="person-add-sharp"></ion-icon>
+                <ion-label>Register</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ng-container>
+
+          <ion-menu-toggle auto-hide="false" *ngIf="core.isLoggedIn">
+            <ion-item (click)="core.auth.logout()" [routerLink]="['login']" [queryParams]="{msg: 'logout'}" routerDirection="root" lines="none" detail="false">
+              <ion-icon slot="start" ios="log-out-outline'" md="log-out-sharp"></ion-icon>
+              <ion-label>Cerrar sesión</ion-label>
             </ion-item>
           </ion-menu-toggle>
         </ion-list>
 
-        <ion-list id="labels-list">
-          <ion-list-header>Labels</ion-list-header>
-
-          <ion-item *ngFor="let label of labels" lines="none">
-            <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-            <ion-label>{{ label }}</ion-label>
+        <ion-list style="padding-top: 0;">
+          <ion-item lines="full">
+            <ion-label>Modo oscuro</ion-label>
+            <ion-toggle #darkModeToggle (ionChange)="toggleDark($event)"></ion-toggle>
           </ion-item>
+        </ion-list>
+
+        <ion-list id="labels-list">
+          <ion-list-header>Enlaces de interés</ion-list-header>
+
+          <a *ngFor="let link of links" target="_blank" [href]="link.url">
+            <ion-item lines="none">
+              <ion-icon slot="start" name="link-outline"></ion-icon>
+              <ion-label>{{ link.name }}</ion-label>
+            </ion-item>
+          </a>
         </ion-list>
       </ion-content>
     </ion-menu>
+
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>
 </ion-app>

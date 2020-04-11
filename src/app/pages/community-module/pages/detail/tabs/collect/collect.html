@@ -1,0 +1,57 @@
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ng-container *ngIf="!query">
+    <ion-card *ngFor="let q of queries" [style.cursor]="'pointer'" [routerLink]="q.code">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <ion-icon size="large" [name]="q.icon" style="max-width: 100px; max-height: 100px; padding: 10px;"></ion-icon>
+        </ion-thumbnail>
+        <ion-card-header>
+          <ion-card-title>{{q.name}}</ion-card-title>
+        </ion-card-header>
+      </ion-item>
+    </ion-card>
+  </ng-container>
+
+  <ng-container *ngIf="query!=null">
+    <ion-card [style.cursor]="'pointer'" [routerLink]="'../'">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <ion-icon size="large" name="arrow-back-outline" style="max-width: 100px; max-height: 100px; padding: 10px;"></ion-icon>
+        </ion-thumbnail>
+        <ion-card-header>
+          <ion-card-title>Volver</ion-card-title>
+        </ion-card-header>
+      </ion-item>
+    </ion-card>
+
+    <ion-list *ngIf="data" style="text-align: center;">
+      <ion-item *ngFor="let collect of data.data; let i=index;" [style.cursor]="isEditable(collect)?'pointer':''" (click)="editCollect(collect)">
+        <ion-avatar slot="start" style="font-size: 2em;">
+          <ion-icon name="information-circle-outline" size="large"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h2>{{collect.user_name}}   <small>{{collect.user_alias}}</small> - MK#{{collect.mak3r_num}}</h2>
+          <p>
+            Total piezas: {{collect.pieces|totalunits}} | Total materiales: {{collect.materials|totalunits}}<br>
+            Fecha: {{collect.created_at|datetime}}
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-button (click)="loadMore()" fill="outline" style="margin-top: 15px;" *ngIf="data.data.length<data.total">
+        {{loadingMore?'Cargando...':'Cargar más'}}
+      </ion-button>
+    </ion-list>
+  </ng-container>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="adminPermission && query=='ranking'">
+    <ion-fab-button (click)="csvExport()">
+      <ion-icon name="save-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <a class="download-zip-link" #downloadLink style="display: none;"></a>
+</ion-content>
