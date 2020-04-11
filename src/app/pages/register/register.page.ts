@@ -22,6 +22,7 @@ export class RegisterPage {
     state: "",
     country: "",
     cp: "",
+    address_description: "",
     privacy_policy_accept: false,
   }
 
