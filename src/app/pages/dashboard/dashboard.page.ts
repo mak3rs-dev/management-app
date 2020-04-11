@@ -39,13 +39,16 @@ export class DashboardPage implements OnInit {
       p.name = p.piece.name;
     });
     community.collect.materials.forEach(p => {
+      p.name = p.material_request.piece.name;
       p.uuid = p.material_request.piece.uuid;
+      p.picture = p.material_request.piece.picture;
       p.units = p.units_delivered;
     });
     community.collect.admin = false;
     community.collect.community = community.uuid;
     community.collect.community_alias = community.alias;
     community.collect.collect = community.collect.id;
+    // community.collect.user = this.core.auth.user.uuid;
     community.collect.user = community.collect.user_uuid;
     community.collect.address = community.collect.collect_address;
     community.collect.address_description = community.collect.collect_address_description;

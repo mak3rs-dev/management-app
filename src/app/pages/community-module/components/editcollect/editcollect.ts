@@ -48,7 +48,6 @@ export class EditcollectComponentPage {
 
   constructor(private core: CoreService, navParams: NavParams) {
     this.data = navParams.data.data;
-    console.log(this.data);
     this.fetchPieces();
     if (this.data.pieces.length) this.fetchPiecesRanking();
     this.fetchMaterials();
@@ -59,8 +58,7 @@ export class EditcollectComponentPage {
   performAutoActions() {
     if (this.data.status_code == this.prettyStatusMap.requested && !this.data.admin) {
       this.data.status_code = this.prettyStatusMap.delivered;
-    }
-    if (this.data.status_code == this.prettyStatusMap.delivered) {
+    } else if (this.data.status_code == this.prettyStatusMap.delivered) {
       this.data.status_code = this.prettyStatusMap.received;
     }
   }
@@ -120,7 +118,8 @@ export class EditcollectComponentPage {
 
   fetchMaterialsRanking() {
     this.data.materials.forEach(itm => {
-      this.core.api.getMaterialUnits(this.data.community_alias, itm.uuid, (this.data.admin)?this.data.user:'').subscribe(ResRanking => {
+      // this.core.api.getMaterialUnits(this.data.community_alias, itm.uuid, (this.data.admin)?this.data.user:'').subscribe(ResRanking => {
+      this.core.api.getRankingByUserPiece(this.data.community_alias, this.data.user, itm.uuid).subscribe(ResRanking => {
         itm.units_request = (<any>ResRanking).data[0].units_request;
         itm.units_delivered = (<any>ResRanking).data[0].units_delivered;
         itm.units_pending = (<any>ResRanking).data[0].units_request-(<any>ResRanking).data[0].units_delivered;
@@ -142,7 +141,8 @@ export class EditcollectComponentPage {
         if (!foundLocal) {
           itm.user = null;
           itm.uuid_community = this.data.community;
-          this.core.api.getMaterialUnits(this.data.community_alias, itm.uuid, (this.data.admin)?this.data.user:'').subscribe(ResRanking => {
+            // this.core.api.getMaterialUnits(this.data.community_alias, itm.uuid, (this.data.admin)?this.data.user:'').subscribe(ResRanking => {
+            this.core.api.getRankingByUserPiece(this.data.community_alias, this.data.user, itm.uuid).subscribe(ResRanking => {
             itm.user = (<any>ResRanking).data[0];
             this.data.materials.push({
               picture:itm.picture,

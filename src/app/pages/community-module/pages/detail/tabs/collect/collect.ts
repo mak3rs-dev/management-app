@@ -70,7 +70,7 @@ export class CollectPage {
     const nextPage = Math.trunc(this.data.data.length / this.data.per_page)+1;
     if (nextPage<=this.data.last_page) {
       this.loadingMore = true;
-      this.core.api.getCollectControl(DetailPage.data.alias, null, this.query).subscribe((Res:any) => {
+      this.core.api.getCollectControl(DetailPage.data.alias, null, this.query, nextPage).subscribe((Res:any) => {
         this.data.data.push(...Res.data);
         this.loadingMore = false;
       }, err => {
@@ -94,7 +94,9 @@ export class CollectPage {
         p.name = p.piece.name;
       });
       collect.materials.forEach(p => {
+        p.name = p.material_request.piece.name;
         p.uuid = p.material_request.piece.uuid;
+        p.picture = p.material_request.piece.picture;
         p.units = p.units_delivered;
       });
       collect.admin = this.adminPermission;

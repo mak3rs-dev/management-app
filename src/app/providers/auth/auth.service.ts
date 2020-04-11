@@ -69,7 +69,7 @@ export class AuthService {
         this.updateStorage();
         if (cb) cb();
       } else {
-        this.core.errorToast(err);
+        this.core.errorToast(null, err);
       }
     });
   }
