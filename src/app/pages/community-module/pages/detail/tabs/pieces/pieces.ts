@@ -50,7 +50,7 @@ export class PiecesPage {
         Res.data.forEach(itm => {
           itm.user = null;
           itm.uuid_community = DetailPage.data.uuid;
-          this.core.api.getMaterialUnits(DetailPage.data.alias, itm.uuid, (this.adminPermission?this.core.auth.user.uuid:'')).subscribe(ResRanking => {
+          this.core.api.getRankingByUserPiece(DetailPage.data.alias, this.core.auth.user.uuid, itm.uuid).subscribe(ResRanking => {
             itm.user = (<any>ResRanking).data[0];
           }, err=>this.core.errorToast(loading, err));
         });
