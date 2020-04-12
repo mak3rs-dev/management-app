@@ -62,7 +62,7 @@ export class PiecesPage {
       });
     });
     this.core.api.getCollectControl(DetailPage.data.alias, null, 'COLLECT:REQUESTED').subscribe((res:any) => {
-      if (res.data && res.data[0]) this.collect = res.data[0];
+      this.collect = res.data[0];
     }, err => this.core.errorToast(null, err));
   }
 

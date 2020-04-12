@@ -89,7 +89,7 @@ export class RankingPage {
 
     pieces: [],
     materials: []
-  }, this.core, () => this.refresh());
+  }, this.core);
 
   csvExport() {
     this.http.get<Blob>(this.core.env.endpoint+'communities/ranking/'+this.communityAlias+'/export', {

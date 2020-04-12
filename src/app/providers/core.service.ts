@@ -38,7 +38,8 @@ export class CoreService {
     await (await this.toastCtrl.create({
       message: message||'Se ha completado la acción correctamente',
       duration: duration||3000,
-      color: 'success'
+      color: 'success',
+      buttons: [{text:'OK', role:'cancel'}]
     })).present();
   }
 
@@ -62,8 +63,9 @@ export class CoreService {
 
     return await (await this.toastCtrl.create({
       message: message||'Se ha producido un error, inténtelo de nuevo más tarde',
-      duration: duration||3000,
-      color: 'danger'
+      duration: duration||5000,
+      color: 'danger',
+      buttons: [{text:'OK', role:'cancel'}]
     })).present();
   }
 
