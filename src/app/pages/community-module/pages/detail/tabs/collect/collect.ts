@@ -117,14 +117,14 @@ export class CollectPage {
   }
 
   csvExport() {
-    this.core.api.getCollectControlCsv(DetailPage.data.uuid).then((file:any) => {
+    this.core.api.getCollectControlCsv(DetailPage.data.alias, null, this.query).then((file:any) => {
       const blob = new Blob([
         new Uint8Array([0xEF, 0xBB, 0xBF]), file
       ], { type: 'text/plain' });
       const url = window.URL.createObjectURL(blob);
       const link = this.downloadLink.nativeElement;
       link.href = url;
-      link.download = 'ranking.csv';
+      link.download = 'stockControl.csv';
       link.click();
 
       window.URL.revokeObjectURL(url);

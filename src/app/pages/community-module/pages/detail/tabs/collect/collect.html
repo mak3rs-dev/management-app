@@ -48,10 +48,10 @@
     </ion-list>
   </ng-container>
 
-  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="adminPermission && query=='ranking'">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="adminPermission && query">
     <ion-fab-button (click)="csvExport()">
       <ion-icon name="save-outline"></ion-icon>
     </ion-fab-button>
-  </ion-fab> -->
+  </ion-fab>
   <a class="download-zip-link" #downloadLink style="display: none;"></a>
 </ion-content>
