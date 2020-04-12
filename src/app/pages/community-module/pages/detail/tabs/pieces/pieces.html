@@ -54,7 +54,7 @@
           <span *ngIf="piece.user===null"><ion-spinner></ion-spinner> Cargando...</span>
           <span *ngIf="piece.user!==null && piece.user===undefined">Parece que aún no has solicitado ninguna unidad</span>
           <ng-container *ngIf="piece.user">
-            Tú -> Solicitados: {{piece.user.units_request||0}} | Recibidos: {{piece.user.units_delivered||0}}
+            Tú -> Solicitados: {{piece.user.units_request||0}} | Recibidos: {{piece.user.units_delivered||0}} | Pendiente: {{piece.user.units_request-piece.user.units_delivered||0}}
           </ng-container>
         </ion-card-subtitle>
       </ion-card-header>
