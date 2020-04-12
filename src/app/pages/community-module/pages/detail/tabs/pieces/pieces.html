@@ -1,6 +1,21 @@
-<ion-content class="ion-padding">
+<ion-content>
 
-  <ng-container *ngIf="dataPieces">
+  <ion-item *ngIf="collect" [style.cursor]="'pointer'" (click)="editCollect(collect)">
+    <ion-label text-wrap>
+      Tienes una recogida pendiente. Haga click aquí para marcar como entregada<br>
+      <small>Fecha solicitud: {{collect.created_at|datetime}}</small>
+    </ion-label>
+    <ion-button>
+      <ion-label>ENTREGADO</ion-label>
+    </ion-button>
+  </ion-item>
+  <ion-item *ngIf="!collect">
+    <ion-label text-wrap>
+      Aún no tienes ninguna recogida solicitada, recuerda que lo único que debes hacer es seguir las indicaciones de los administradores, las recogidas las solicitan ellos.
+    </ion-label>
+  </ion-item>
+
+  <div *ngIf="dataPieces" class="ion-padding">
     <h2>Piezas</h2>
     <ion-card *ngFor="let piece of dataPieces.data" style="display: flex;" [style.cursor]="piece.user!==null?'pointer':'unset'" (click)="piece.user!==null&&clickPiece(piece)">
       <img [src]="piece.picture||'/assets/icon/favicon.png'" style="max-width: 100px; max-height: 100px; padding: 10px;">
@@ -25,9 +40,9 @@
         {{data.description}}
       </ion-card-content> -->
     </ion-card>
-  </ng-container>
+  </div>
 
-  <ng-container *ngIf="dataMaterials">
+  <div *ngIf="dataMaterials" class="ion-padding">
     <h2>Materiales</h2>
     <ion-card *ngFor="let piece of dataMaterials.data" style="display: flex;" [style.cursor]="piece.user!==null?'pointer':'unset'" (click)="piece.user!==null&&clickMaterial(piece)">
       <img [src]="piece.picture||'/assets/img/placeholder.jpg'" style="max-width: 100px; max-height: 100px; padding: 10px;">
@@ -49,7 +64,7 @@
       </ion-card-content> -->
     </ion-card>
 
-  </ng-container>
+  </div>
 
   <!-- TODO: Pending pagination -->
 </ion-content>

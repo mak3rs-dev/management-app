@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { DetailPage } from '../../detail.page';
 import { UpdateStockComponentPage } from 'src/app/pages/community-module/components/updatestock/updatestock';
 import { AlertController } from '@ionic/angular';
+import { EditcollectComponentPage } from 'src/app/pages/community-module/components/editcollect/editcollect';
 
 @Component({
   selector: 'page-pieces',
@@ -12,6 +13,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class PiecesPage {
 
+  collect: any = null;
   dataPieces: any = null;
   dataMaterials: any = null;
 
@@ -59,6 +61,9 @@ export class PiecesPage {
         this.router.navigateByUrl('/community/'+DetailPage.data.alias+'/info');
       });
     });
+    this.core.api.getCollectControl(DetailPage.data.alias, null, 'COLLECT:REQUESTED').subscribe((res:any) => {
+      if (res.data && res.data[0]) this.collect = res.data[0];
+    }, err => this.core.errorToast(null, err));
   }
 
   public clickMaterial(p) {
@@ -81,5 +86,34 @@ export class PiecesPage {
 
   public clickPiece = (p) => this.changeStock(p);
   changeStock = (p) => UpdateStockComponentPage.Open(p, this.core, () => this.refresh());
+
+  editCollect(collect) {
+    collect.pieces.forEach(p => {
+      p.uuid = p.piece.uuid;
+      p.picture = p.piece.picture;
+      p.name = p.piece.name;
+    });
+    collect.materials.forEach(p => {
+      p.name = p.material_request.piece.name;
+      p.uuid = p.material_request.piece.uuid;
+      p.picture = p.material_request.piece.picture;
+      p.units = p.units_delivered;
+    });
+    collect.admin = false;
+    collect.community = DetailPage.data.uuid;
+    collect.community_alias = DetailPage.data.alias;
+    collect.collect = collect.id;
+    // collect.user = this.core.auth.user.uuid;
+    collect.user = collect.user_uuid;
+    collect.address = collect.collect_address;
+    collect.address_description = collect.collect_address_description;
+    collect.location = collect.collect_location;
+    collect.province = collect.collect_province;
+    collect.state = collect.collect_state;
+    collect.country = collect.collect_country;
+    collect.cp = collect.collect_cp;
+
+    EditcollectComponentPage.Open(collect, this.core, () =>  this.refresh());
+  }
 
 }

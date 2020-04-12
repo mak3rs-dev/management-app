@@ -25,7 +25,7 @@
         <ion-icon name="information-circle"></ion-icon>
       </ion-tab-button>
       <ion-tab-button [disabled]="!data.user" tab="pieces">
-        <ion-label>Piezas</ion-label>
+        <ion-label>Control Stock</ion-label>
         <ion-icon name="cube-outline"></ion-icon>
       </ion-tab-button>
       <ion-tab-button [disabled]="!data.user" tab="ranking">
@@ -36,7 +36,7 @@
         <ion-label>Stock</ion-label>
         <ion-icon name="file-tray-stacked-outline"></ion-icon>
       </ion-tab-button>
-      <ion-tab-button [disabled]="!data.user" tab="collect">
+      <ion-tab-button tab="collect" *ngIf="adminPermission">
         <ion-label>Recogidas</ion-label>
         <ion-icon name="car-outline"></ion-icon>
       </ion-tab-button>

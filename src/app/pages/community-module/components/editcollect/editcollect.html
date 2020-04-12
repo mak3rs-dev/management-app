@@ -34,7 +34,8 @@
                 Fabricadas: {{piece.units_manufactured}} | Entregadas: {{piece.units_collected}} | Stock: {{piece.stock}}
               </ng-container>
               <ion-item>
-                <ion-label>Cantidad solicitada</ion-label>
+                <ion-label *ngIf="data.admin">Cantidad solicitada</ion-label>
+                <ion-label *ngIf="!data.admin">Cantidad entregada</ion-label>
                 <ion-input [name]="'units'+piece.uuid" type="number" [min]="0" [max]="piece.stock" [(ngModel)]="piece.units"></ion-input>
               </ion-item>
               <small *ngIf="data.admin">* El maker podrá reemplazar este número al realizar la entrega</small>
@@ -82,7 +83,7 @@
           </ion-card-header>
         </ion-card>
       </ng-container>
-      <ng-container *ngIf="materialStockAvailable">
+      <ng-container *ngIf="data.admin && materialStockAvailable">
         <ion-list-header>
           <ion-label>Otros materiales solicitados que no se proveerán</ion-label>
           <ion-button fill="outline" (click)="showAvailableMaterials=!showAvailableMaterials">{{showAvailableMaterials?'OCULTAR':'MOSTRAR'}}</ion-button>
