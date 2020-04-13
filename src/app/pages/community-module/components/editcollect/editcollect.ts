@@ -130,7 +130,7 @@ export class EditcollectComponentPage {
   fetchMaterials(cb: Function = null, page=1, autoAddUnits=null) {
     if (autoAddUnits===null) autoAddUnits = (this.data.materials.length || this.data.id)?false:true;
     this.loadingPieces = true;
-    this.core.api.getCommunityPieces(this.data.community, 'material', this.data.user).subscribe((Res:any) => {
+    this.core.api.getCommunityPieces(this.data.community, 'material', page).subscribe((Res:any) => {
       Res.data.forEach(itm => {
         let foundLocal = false;
         this.data.materials.forEach(itmlocal => {
@@ -170,7 +170,15 @@ export class EditcollectComponentPage {
     });
   }
 
-
+  toggleValidation(piece) {
+    this.core.createLoading().then(loading => {
+      const willBeValidated = piece.validated_at==null;
+      this.core.api.setPieceValidation(this.data.user, piece.uuid, willBeValidated).subscribe((Res:any) => {
+        piece.validated_at = willBeValidated;
+        this.core.successToast(loading, Res.message);
+      }, err => this.core.errorToast(loading, err));
+    });
+  }
 
   validate(cbOk: Function=null) {
     // if (this.newStock<this.getMin) {

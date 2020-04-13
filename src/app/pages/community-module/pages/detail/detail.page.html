@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Comunidad {{data&&data.name}}</ion-title>
+    <ion-title>{{data&&data.name}}</ion-title>
 
     <ion-buttons slot="end">
       <ion-button (click)="join()" *ngIf="core.isLoggedIn && data && !data.user">

@@ -13,7 +13,7 @@
     <img *ngIf="data.picture" [src]="data.picture" style="width: 100%;">
     <ion-card-header *ngIf="!editMode">
       <ion-card-title>{{data.name}}</ion-card-title>
-      <ion-card-subtitle>{{data.alias}}</ion-card-subtitle>
+      <ion-card-subtitle>{{core.auth.user?'MK#'+data.mak3r_num+'@':''}}{{data.alias.replace('@','')}} <a *ngIf="data.alias.indexOf('@')>-1" [href]="'https://t.me/'+data.alias.replace('@','')">Telegram</a></ion-card-subtitle>
     </ion-card-header>
     <ion-card-header *ngIf="editMode">
       <ion-input [autocomplete]="'nope'" [(ngModel)]="data.name" placeholder="Nombre"></ion-input>

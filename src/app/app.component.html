@@ -21,13 +21,13 @@
           <ng-container *ngIf="!core.isLoggedIn">
             <ion-menu-toggle auto-hide="false">
               <ion-item routerDirection="root" routerLink="/login" lines="none" detail="false" routerLinkActive="selected">
-                <ion-icon slot="start" ios="key-outline'" md="key-sharp"></ion-icon>
+                <ion-icon slot="start" ios="key-outline" md="key-sharp"></ion-icon>
                 <ion-label>Iniciar sesión</ion-label>
               </ion-item>
             </ion-menu-toggle>
             <ion-menu-toggle auto-hide="false">
               <ion-item routerDirection="root" routerLink="/register" lines="none" detail="false" routerLinkActive="selected">
-                <ion-icon slot="start" ios="person-add-outline'" md="person-add-sharp"></ion-icon>
+                <ion-icon slot="start" ios="person-add-outline" md="person-add-sharp"></ion-icon>
                 <ion-label>Register</ion-label>
               </ion-item>
             </ion-menu-toggle>
@@ -35,7 +35,7 @@
 
           <ion-menu-toggle auto-hide="false" *ngIf="core.isLoggedIn">
             <ion-item (click)="core.auth.logout()" [routerLink]="['login']" [queryParams]="{msg: 'logout'}" routerDirection="root" lines="none" detail="false">
-              <ion-icon slot="start" ios="log-out-outline'" md="log-out-sharp"></ion-icon>
+              <ion-icon slot="start" ios="log-out-outline" md="log-out-sharp"></ion-icon>
               <ion-label>Cerrar sesión</ion-label>
             </ion-item>
           </ion-menu-toggle>
