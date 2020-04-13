@@ -35,7 +35,7 @@
 
           <ion-menu-toggle auto-hide="false" *ngIf="core.isLoggedIn">
             <ion-item (click)="core.auth.logout()" [routerLink]="['login']" [queryParams]="{msg: 'logout'}" routerDirection="root" lines="none" detail="false">
-              <ion-icon slot="start" ios="log-out-outline'" md="log-out-sharp"></ion-icon>
+              <ion-icon slot="start" ios="log-out-outline" md="log-out-sharp"></ion-icon>
               <ion-label>Cerrar sesión</ion-label>
             </ion-item>
           </ion-menu-toggle>
