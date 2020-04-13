@@ -61,7 +61,7 @@ export class PiecesPage {
         this.router.navigateByUrl('/community/'+DetailPage.data.alias+'/info');
       });
     });
-    this.core.api.getCollectControl(DetailPage.data.alias, null, 'COLLECT:REQUESTED').subscribe((res:any) => {
+    this.core.api.getCollectControl(DetailPage.data.alias, (this.adminPermission?this.core.auth.user.uuid:null), 'COLLECT:REQUESTED').subscribe((res:any) => {
       this.collect = res.data[0];
     }, err => this.core.errorToast(null, err));
   }
