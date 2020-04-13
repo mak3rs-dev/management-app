@@ -15,6 +15,11 @@
 
 <ion-content class="ion-padding">
 
+  <ion-item [color]="'warning'">
+    <ion-icon name="alert-circle-outline"></ion-icon>
+    <ion-label text-wrap>Utiliza esta pantalla solo cuando te hayan recogido el material, comprobando más abajo las cantidades entregadas. Hasta entonces lo único que debes de modificar es el stock y solicitudes de material.</ion-label>
+  </ion-item>
+
   <form #registerForm="ngForm"  class="ion-padding" (submit)="save()">
 
     <h2>Recogida para {{data.user_name}}{{(data.mak3r_num)?' - MK#'+data.mak3r_num:''}}</h2>
@@ -27,7 +32,8 @@
           <ion-card-header style="width: 100%;">
             <ion-card-title>
               {{piece.name}}
-              <ion-button *ngIf="piece.validated_at" fill="outline" size="small" color="success" style="transform: translateY(-5px)">VALIDADA</ion-button>
+              <ion-button (click)="data.admin && toggleValidation(piece)" *ngIf="piece.validated_at" fill="outline" size="small" color="success" style="transform: translateY(-5px)">VALIDADA</ion-button>
+              <ion-button (click)="data.admin && toggleValidation(piece)" *ngIf="!piece.validated_at" fill="outline" size="small" color="danger" style="transform: translateY(-5px)">NO VALIDADA</ion-button>
             </ion-card-title>
             <ion-card-subtitle>
               <ng-container>
@@ -79,6 +85,7 @@
               <ion-item *ngIf="!data.admin">
                 <ion-label>Recibirás {{material.units}} unidad{{(material.units>1)?'es':''}}</ion-label>
               </ion-item>
+              <small *ngIf="!data.admin">* Si la cantidad que te han entregado no encaja ponte en contacto con algún administrador</small>
             </ion-card-subtitle>
           </ion-card-header>
         </ion-card>

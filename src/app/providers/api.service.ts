@@ -47,5 +47,6 @@ export class ApiService {
   putNewMaterialUnits = (uuid_community:string, uuid_piece:string, units:number) => this.http.post(this.core.env.endpoint+'communities/materials/add-or-update', {uuid_community: uuid_community,uuid_piece: uuid_piece,units: units}, {headers:{Authorization: this.core.auth.token}});
   getMaterialUnits = (alias:string, uuid_piece:string, user:string='') => this.http.get(this.core.env.endpoint+'communities/materials/'+alias+'?piece='+uuid_piece+'&user='+user, {headers:{Authorization: this.core.auth.token}});
   confirmPrivacyPolicy = () => this.http.patch(this.core.env.endpoint+'auth/policy', null, {headers:{Authorization: this.core.auth.token}});
+  setPieceValidation = (user_uuid:string, piece_uuid:string, validate:boolean) => this.http.patch(this.core.env.endpoint+'pieces/validate', {user:user_uuid, piece:piece_uuid, validate:validate}, {headers:{Authorization: this.core.auth.token}});
 
 }
