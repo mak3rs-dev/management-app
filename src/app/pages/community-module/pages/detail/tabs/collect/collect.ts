@@ -48,10 +48,11 @@ export class CollectPage {
     if (this.query) this.refresh();
   }
 
-  public refresh(event=null) {
+  public refresh(event=null, page:number|string=null) {
     const doWork = (loading=null) => {
-      this.data = null;
-      this.core.api.getCollectControl(DetailPage.data.alias, null, this.query).subscribe(Res => {
+      if (page==null) page = (this.data==null) ? 1:this.data.current_page;
+      if (page==1) this.data = null;
+      this.core.api.getCollectControl(DetailPage.data.alias, null, this.query, page).subscribe(Res => {
         this.data = Res;
         if (loading) loading.dismiss();
         if (event != null) event.target.complete();
@@ -66,7 +67,7 @@ export class CollectPage {
     else doWork();
   }
 
-  loadMore() {
+  loadMore() { // Won't be used in future
     const nextPage = Math.trunc(this.data.data.length / this.data.per_page)+1;
     if (nextPage<=this.data.last_page) {
       this.loadingMore = true;

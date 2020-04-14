@@ -35,16 +35,27 @@
           <ion-icon name="information-circle-outline" size="large"></ion-icon>
         </ion-avatar>
         <ion-label>
-          <h2>{{collect.user_name}}   <small>{{collect.user_alias}}</small> - MK#{{collect.mak3r_num}}</h2>
+          <h2>{{collect.user_name}}   <small [innerHTML]="collect.user_alias|linkify"></small> - MK#{{collect.mak3r_num}}</h2>
           <p>
             Total piezas: {{collect.pieces|totalunits}} | Total materiales: {{collect.materials|totalunits}}<br>
             Fecha: {{collect.created_at|datetime}} | Modificación: {{collect.updated_at|datetime}}
           </p>
         </ion-label>
       </ion-item>
-      <ion-button (click)="loadMore()" fill="outline" style="margin-top: 15px;" *ngIf="data.data.length<data.total">
+      <ion-button (click)="loadMore()" fill="outline" style="margin-top: 15px;" *ngIf="false && data.data.length<data.total">
         {{loadingMore?'Cargando...':'Cargar más'}}
       </ion-button>
+      <ion-item>
+        <ion-col>
+          <ion-row style="text-align: center; display: block;">
+            <ion-button [disabled]="data.current_page==1" (click)="refresh(null, 1)" fill="outline"><ion-icon name="play-skip-back-outline"></ion-icon></ion-button>
+            <ion-button [disabled]="data.current_page==1" (click)="refresh(null, data.current_page-1)" fill="outline"><ion-icon name="play-back-outline"></ion-icon></ion-button>
+            <ion-button fill="clear">{{data.current_page}} / {{data.last_page}}</ion-button>
+            <ion-button [disabled]="data.current_page==data.last_page" (click)="refresh(null, data.current_page+1)" fill="outline"><ion-icon name="play-forward-outline"></ion-icon></ion-button>
+            <ion-button [disabled]="data.current_page==data.last_page" (click)="refresh(null, data.last_page)" fill="outline"><ion-icon name="play-skip-forward-outline"></ion-icon></ion-button>
+          </ion-row>
+        </ion-col>
+      </ion-item>
     </ion-list>
   </ng-container>
 
