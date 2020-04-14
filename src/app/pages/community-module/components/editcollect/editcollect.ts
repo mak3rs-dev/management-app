@@ -84,6 +84,7 @@ export class EditcollectComponentPage {
           if (itm.uuid==itmlocal.uuid) {
             foundLocal = true;
             itmlocal.validated_at = itm.validated_at;
+            itmlocal.picture = itm.picture;
           }
         });
         if (!foundLocal) {
@@ -137,13 +138,14 @@ export class EditcollectComponentPage {
         this.data.materials.forEach(itmlocal => {
           if (itm.uuid==itmlocal.uuid) {
             foundLocal = true;
+            itmlocal.picture = itm.picture;
           }
         });
         if (!foundLocal) {
           itm.user = null;
           itm.uuid_community = this.data.community;
-            // this.core.api.getMaterialUnits(this.data.community_alias, itm.uuid, (this.data.admin)?this.data.user:'').subscribe(ResRanking => {
-            this.core.api.getRankingByUserPiece(this.data.community_alias, this.data.user, itm.uuid).subscribe(ResRanking => {
+          // this.core.api.getMaterialUnits(this.data.community_alias, itm.uuid, (this.data.admin)?this.data.user:'').subscribe(ResRanking => {
+          this.core.api.getRankingByUserPiece(this.data.community_alias, this.data.user, itm.uuid).subscribe(ResRanking => {
             itm.user = (<any>ResRanking).data[0];
             this.data.materials.push({
               picture:itm.picture,
