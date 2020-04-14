@@ -4,23 +4,30 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <ion-item *ngIf="query=='stock'">
+    <ion-checkbox [(ngModel)]="showEntriesWithActiveCollects"></ion-checkbox>
+    <ion-label style="margin-left: 10px;">Mostrar mak3rs con recogidas activas</ion-label>
+  </ion-item>
+
   <ion-list *ngIf="data" style="text-align: center;">
-    <ion-item *ngFor="let user of data.data; let i=index;" [style.cursor]="query=='stock'?'pointer':''" (click)="(query=='stock')?createCollect(user):true">
-      <ion-avatar slot="start" style="font-size: 2em; min-width: 54px; text-align: center;" [class.elegible]="user.stock>=10">
-        {{i+1}}
-      </ion-avatar>
-      <ion-label>
-        <h2>{{user.user_name}}   <small [innerHTML]="user.user_alias|linkify"></small> - MK#{{user.mak3r_num}}</h2>
-        <p>
-          Total fabricadas: {{user.units_manufactured}}
-          <ng-container *ngIf="adminPermission">| Total recogidas: {{user.units_collected}} | Stock: {{user.stock}}</ng-container>
-        </p>
-        <p *ngIf="adminPermission && showAddresses">
-          {{user.user_address}} - {{user.user_location}} ({{user.user_cp}}) <br>
-          {{user.user_province}} - {{user.user_state}} - {{user.user_country}}
-        </p>
-      </ion-label>
-    </ion-item>
+    <ng-container *ngFor="let user of data.data; let i=index;" [style.cursor]="query=='stock'?'pointer':''">
+      <ion-item *ngIf="!(!showEntriesWithActiveCollects && user.num_active_collects)" (click)="(query=='stock')?createCollect(user):true">
+        <ion-avatar slot="start" style="font-size: 2em; min-width: 54px; text-align: center;" [class.elegible]="user.stock>=10">
+          {{i+1}}
+        </ion-avatar>
+        <ion-label>
+          <h2>{{user.user_name}}   <small [innerHTML]="user.user_alias|linkify"></small> - MK#{{user.mak3r_num}}</h2>
+          <p>
+            Total fabricadas: {{user.units_manufactured}}
+            <ng-container *ngIf="adminPermission">| Total recogidas: {{user.units_collected}} | Stock: {{user.stock}}</ng-container>
+          </p>
+          <p *ngIf="adminPermission && showAddresses">
+            {{user.user_address}} - {{user.user_location}} ({{user.user_cp}}) <br>
+            {{user.user_province}} - {{user.user_state}} - {{user.user_country}}
+          </p>
+        </ion-label>
+      </ion-item>
+    </ng-container>
     <ion-button (click)="loadMore()" fill="outline" style="margin-top: 15px;" *ngIf="data.data.length<data.total">
       {{loadingMore?'Cargando...':'Cargar más'}}
     </ion-button>

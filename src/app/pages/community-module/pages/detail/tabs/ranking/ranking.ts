@@ -19,6 +19,7 @@ export class RankingPage {
   }
   data: any = null;
   query: 'ranking'|'stock' = 'ranking';
+  showEntriesWithActiveCollects: boolean = true;
   showAddresses: boolean = false;
   loadingMore: boolean = false;
   communityAlias: string = null;
