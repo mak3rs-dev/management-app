@@ -19,7 +19,8 @@ export class CoreService {
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
-    public navCtrl: NavController
+    public navCtrl: NavController,
+    public alertCtrl: AlertController
   ) {
     api.initCore(this);
     auth.initCore(this);

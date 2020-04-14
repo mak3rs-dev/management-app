@@ -18,6 +18,7 @@ export class EditcollectComponentPage {
   ];
   prettyStatusMap = {requested: 'COLLECT:REQUESTED', delivered: 'COLLECT:DELIVERED', received: 'COLLECT:RECEIVED'};
   loadingPieces: boolean = true;
+  hasChangedValidation: boolean = false;
 
   showAvailablePieces: boolean = false;
   get pieceStockAvailable(): boolean {
@@ -172,8 +173,9 @@ export class EditcollectComponentPage {
 
   toggleValidation(piece) {
     this.core.createLoading().then(loading => {
-      const willBeValidated = piece.validated_at==null;
+      const willBeValidated = (!piece.validated_at)?true:false;
       this.core.api.setPieceValidation(this.data.user, piece.uuid, willBeValidated).subscribe((Res:any) => {
+        this.hasChangedValidation = true;
         piece.validated_at = willBeValidated;
         this.core.successToast(loading, Res.message);
       }, err => this.core.errorToast(loading, err));
@@ -185,7 +187,17 @@ export class EditcollectComponentPage {
     //   this.newStock = this.getMin;
     //   this.core.errorToast(null, 'La cantidad introducida no es válida (el stock actual no puede ser inferior a cero), por lo que se ha establecido al mínimo número posible');
     // } else
-    cbOk&&cbOk();
+    if (this.hasChangedValidation) {
+      this.core.alertCtrl.create({
+        message: 'Ha modificado la validación de una pieza. ¿Está seguro de que quiere solicitar una recogida?',
+        buttons: [
+          {text: 'No', role: 'cancel'},
+          {text: 'Sí', handler: cbOk&&cbOk()},
+        ]
+      }).then(a => a.present());
+    } else {
+      cbOk&&cbOk();
+    }
   }
 
   dismiss() {

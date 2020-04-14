@@ -15,9 +15,14 @@
 
 <ion-content class="ion-padding">
 
-  <ion-item [color]="'warning'">
+  <ion-item [color]="'warning'" *ngIf="!data.admin">
     <ion-icon name="alert-circle-outline"></ion-icon>
     <ion-label text-wrap>Utiliza esta pantalla solo cuando te hayan recogido el material, comprobando más abajo las cantidades entregadas. Hasta entonces lo único que debes de modificar es el stock y solicitudes de material.</ion-label>
+  </ion-item>
+
+  <ion-item [color]="'warning'" *ngIf="data.admin">
+    <ion-icon name="alert-circle-outline"></ion-icon>
+    <ion-label text-wrap>Tal y como pone en el título de la ventana, esto es para crear una recogida, no para modificar el stock...</ion-label>
   </ion-item>
 
   <form #registerForm="ngForm"  class="ion-padding" (submit)="save()">
