@@ -194,7 +194,7 @@ export class EditcollectComponentPage {
         message: 'Ha modificado la validación de una pieza. ¿Está seguro de que quiere solicitar una recogida?',
         buttons: [
           {text: 'No', role: 'cancel'},
-          {text: 'Sí', handler: cbOk&&cbOk()},
+          {text: 'Sí', handler: () => { if (cbOk) cbOk(); }},
         ]
       }).then(a => a.present());
     } else {

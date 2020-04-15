@@ -1,9 +1,11 @@
 import { environment } from './../../environments/environment';
-import { Injectable } from '@angular/core';
+import { Injectable, ApplicationRef } from '@angular/core';
 import { ApiService } from './api.service';
 import { ToastController, LoadingController, NavController, AlertController, ModalController } from '@ionic/angular';
 import { AuthService } from './auth/auth.service';
+import { first } from 'rxjs/internal/operators/first';
 import { PrivacyComponentPage } from '../components/privacy/privacy';
+import { VersionService } from './version.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,17 +15,30 @@ export class CoreService {
   public env: any = environment;
   get isLoggedIn() { return this.auth.token!=''; };
 
+  public stable = false;
+  public appIsStable = this.appRef.isStable.pipe(first(isStable => {
+    if (isStable === true) {
+      this.stable = true;
+      return true;
+    } else {
+      return false;
+    }
+  }));
+
   constructor(
     public api: ApiService,
     public auth: AuthService,
+    public version: VersionService,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
     public navCtrl: NavController,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    private appRef: ApplicationRef,
   ) {
     api.initCore(this);
     auth.initCore(this);
+    version.initCore(this);
 
     if (!this.env.production) console.log('Loaded env: ', this.env);
   }

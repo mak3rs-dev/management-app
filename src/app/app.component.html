@@ -9,6 +9,13 @@
           </ion-list-header>
           <ion-note>Community management app for mak3rs, by mak3rs 🎉</ion-note>
 
+          <ion-item *ngIf="core.version.updatePending" color="warning" style="cursor:pointer; margin-bottom: 10px;" (click)="core.version.update()">
+            <ion-icon name="refresh-outline"></ion-icon>
+            <ion-label text-wrap style="margin-left: 7px;">
+              No estás ejecutando la última versión de la aplicación, pulse aquí para actualizar
+            </ion-label>
+          </ion-item>
+
           <ng-container *ngFor="let p of appPages">
             <ion-menu-toggle auto-hide="false" *ngIf="p.requireLogin ? core.isLoggedIn:true">
               <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
