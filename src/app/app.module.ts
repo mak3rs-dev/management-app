@@ -21,6 +21,9 @@ import { CommunityModule } from './pages/community-module/community.module';
 import { E404Page } from './pages/404/404.page';
 import { RecoverPage } from './pages/recover/recover.page';
 import { ComponentsModule } from './components/components.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { VersionService } from './providers/version.service';
 
 const PAGES = [ LoginPage, RecoverPage, RegisterPage, DashboardPage, E404Page ];
 
@@ -34,7 +37,8 @@ const PAGES = [ LoginPage, RecoverPage, RegisterPage, DashboardPage, E404Page ];
     HttpClientModule,
     FormsModule,
     CommunityModule,
-    ComponentsModule
+    ComponentsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     StatusBar,
@@ -42,6 +46,7 @@ const PAGES = [ LoginPage, RecoverPage, RegisterPage, DashboardPage, E404Page ];
     CoreService,
     ApiService,
     AuthService,
+    VersionService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
