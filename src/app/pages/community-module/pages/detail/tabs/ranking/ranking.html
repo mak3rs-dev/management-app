@@ -33,6 +33,11 @@
     </ion-button>
   </ion-list>
 
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="adminPermission && query=='stock'">
+    <ion-fab-button (click)="filter()">
+      <ion-icon name="funnel-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="adminPermission && query=='ranking'">
     <ion-fab-button (click)="csvExport()">
       <ion-icon name="save-outline"></ion-icon>
