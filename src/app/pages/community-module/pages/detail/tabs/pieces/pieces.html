@@ -42,7 +42,7 @@
         <ion-label>Descripción</ion-label>
         <ion-button fill="outline" (click)="piece.showDesc=!(piece.showDesc?true:false)">{{piece.showDesc?'OCULTAR':'MOSTRAR'}}</ion-button>
       </ion-item>
-      <ion-text *ngIf="piece.showDesc" style="display: block;" class="ion-padding" [innerHTML]="piece.description|linkify"></ion-text>
+      <ion-text *ngIf="piece.showDesc" style="display: block; white-space: pre-line;" class="ion-padding" [innerHTML]="piece.description|linkify"></ion-text>
 
       <!-- <ion-card-content *ngIf="data.description">
         {{data.description}}
