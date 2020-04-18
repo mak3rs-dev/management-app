@@ -4,10 +4,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UpdateStockComponentPage } from './updatestock/updatestock';
 import { EditcollectComponentPage } from './editcollect/editcollect';
+import { FiltersComponentPage } from './filters/filters';
 
 const COMPONENTS = [
 	UpdateStockComponentPage,
-	EditcollectComponentPage
+	EditcollectComponentPage,
+	FiltersComponentPage
 ]
 
 @NgModule({
