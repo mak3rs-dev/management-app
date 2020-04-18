@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DetailPage } from '../../detail.page';
 import { EditcollectComponentPage } from 'src/app/pages/community-module/components/editcollect/editcollect';
+import { FiltersComponentPage } from 'src/app/pages/community-module/components/filters/filters';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'page-ranking',
@@ -18,6 +20,7 @@ export class RankingPage {
     return (this.core.auth.user&&this.core.auth.user.role_name=='USER:ADMIN')||DetailPage.isMakerAdmin||false;
   }
   data: any = null;
+  filterConfig: any = {piece:null};
   query: 'ranking'|'stock' = 'ranking';
   showEntriesWithActiveCollects: boolean = true;
   showAddresses: boolean = false;
@@ -38,10 +41,14 @@ export class RankingPage {
     this.refresh();
   }
 
+  private getQueryFunc(page=1): Observable<Object> {
+    const query = (this.query=='ranking')?this.core.api.getCommunityRanking:this.core.api.getCommunityStock;
+    return query(this.communityAlias, page, this.filterConfig.piece);
+  }
+
   public refresh(event=null) {
     const doWork = (loading=null) => {
-      const query = (this.query=='ranking')?this.core.api.getCommunityRanking:this.core.api.getCommunityStock;
-      query(this.communityAlias).subscribe(Res => {
+      this.getQueryFunc().subscribe(Res => {
         this.data = Res;
         if (loading) loading.dismiss();
         if (event != null) event.target.complete();
@@ -56,12 +63,11 @@ export class RankingPage {
     else doWork();
   }
 
-  loadMore() {
+  public loadMore() {
     const nextPage = Math.trunc(this.data.data.length / this.data.per_page)+1;
     if (nextPage<=this.data.last_page) {
       this.loadingMore = true;
-      const query = (this.query=='ranking')?this.core.api.getCommunityRanking:this.core.api.getCommunityStock;
-      query(this.communityAlias, nextPage).subscribe((Res:any) => {
+      this.getQueryFunc(nextPage).subscribe((Res:any) => {
         this.data.data.push(...Res.data);
         this.loadingMore = false;
       }, err => {
@@ -70,6 +76,15 @@ export class RankingPage {
       });
     }
   }
+
+  filter = () => FiltersComponentPage.Open({
+    bypieces:true,
+    community:DetailPage.data.uuid,
+    data:this.filterConfig
+  },this.core, d=>{
+    this.filterConfig=d.data;
+    this.refresh();
+  });
 
   createCollect = (user) => EditcollectComponentPage.Open({
     admin: this.adminPermission,

@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Filtrar</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="reset()">
+        RESETEAR
+      </ion-button>
+      <ion-button (click)="dismiss()">
+        CANCELAR
+      </ion-button>
+      <ion-button (click)="save()">
+        GUARDAR
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ng-container *ngIf="config.bypieces && config.pieces">
+    <h2>Filtrar por pieza</h2>
+    <ion-list>
+      <ion-radio-group [(ngModel)]="data['piece']">
+        <ion-item>
+          <ion-radio slot="start" [value]="''"></ion-radio>
+          <ion-label>No filtrar</ion-label>
+        </ion-item>
+        <ion-item *ngFor="let p of config.pieces">
+          <ion-radio slot="start" [value]="p.uuid"></ion-radio>
+          <ion-label>{{p.name}}</ion-label>
+        </ion-item>
+      </ion-radio-group>
+      <!-- <ion-item>
+        <ion-checkbox></ion-checkbox>
+        <ion-label>{{p.name}}</ion-label>
+      </ion-item> -->
+    </ion-list>
+  </ng-container>
+</ion-content>

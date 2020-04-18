@@ -12,9 +12,9 @@ export class EditcollectComponentPage {
 
   data: any = null;
   statuses: any[] = [
-    { code: 'requested', name: 'Recogida solicitada', icon: 'mail-unread-outline'},
-    { code: 'delivered', name: 'Recogida entregada', icon: 'mail-outline'},
-    { code: 'received', name: 'Recogida recibida', icon: 'mail-open-outline'}
+    { code: 'requested', name: 'Solicitada', icon: 'mail-unread-outline'},
+    { code: 'delivered', name: 'Entregada', icon: 'mail-outline'},
+    { code: 'received', name: 'Recibida', icon: 'mail-open-outline'}
   ];
   prettyStatusMap = {requested: 'COLLECT:REQUESTED', delivered: 'COLLECT:DELIVERED', received: 'COLLECT:RECEIVED'};
   loadingPieces: boolean = true;
@@ -33,12 +33,36 @@ export class EditcollectComponentPage {
 
     return output;
   };
+  hasMoreAvailableStock() {
+    let output = this.pieceStockAvailable;
+    if (!output && this.data.pieces && this.data.pieces.length) {
+      this.data.pieces.forEach(itm => {
+        if (!output && itm.units!=undefined && itm.stock!=undefined && itm.units != itm.stock) {
+          output = true;
+        }
+      });
+    }
+
+    return output;
+  }
   showAvailableMaterials: boolean = false;
   get materialStockAvailable(): boolean {
     let output = false;
     if (this.data.materials && this.data.materials.length) {
       this.data.materials.forEach(itm => {
         if (!output && itm.units!=undefined && itm.units_pending!=undefined && itm.units == 0 && itm.units_pending!=0) {
+          output = true;
+        }
+      });
+    }
+
+    return output;
+  };
+  get materialAvailable(): boolean {
+    let output = false;
+    if (this.data.materials && this.data.materials.length) {
+      this.data.materials.forEach(itm => {
+        if (!output && itm.units!=undefined && itm.units_pending!=undefined && itm.units_pending!=0) {
           output = true;
         }
       });
@@ -189,7 +213,15 @@ export class EditcollectComponentPage {
     //   this.newStock = this.getMin;
     //   this.core.errorToast(null, 'La cantidad introducida no es válida (el stock actual no puede ser inferior a cero), por lo que se ha establecido al mínimo número posible');
     // } else
-    if (this.hasChangedValidation) {
+    if (this.data.status_code==this.prettyStatusMap.delivered && this.hasMoreAvailableStock()) {
+      this.core.alertCtrl.create({
+        message: 'Tiene más stock para algunas piezas. ¿Está seguro de que quiere marcar como entregadas las cantidades indicadas?',
+        buttons: [
+          {text: 'No', role: 'cancel'},
+          {text: 'Sí', handler: () => { if (cbOk) cbOk(); }},
+        ]
+      }).then(a => a.present());
+    } else if (this.hasChangedValidation) {
       this.core.alertCtrl.create({
         message: 'Ha modificado la validación de una pieza. ¿Está seguro de que quiere solicitar una recogida?',
         buttons: [

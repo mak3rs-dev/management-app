@@ -17,25 +17,32 @@
 
   <div *ngIf="dataPieces" class="ion-padding">
     <h2>Piezas</h2>
-    <ion-card *ngFor="let piece of dataPieces.data" style="display: flex;" [style.cursor]="piece.user!==null?'pointer':'unset'" (click)="piece.user!==null&&clickPiece(piece)">
-      <img [src]="piece.picture||'/assets/icon/favicon.png'" style="max-width: 100px; max-height: 100px; padding: 10px;">
-      <ion-card-header>
-        <ion-card-title>
-          {{piece.name}}
-          <ion-button *ngIf="piece.validated_at" fill="outline" size="small" color="success" style="transform: translateY(-5px)">VALIDADA</ion-button>
-          <ion-button *ngIf="!piece.validated_at" fill="outline" size="small" color="danger" style="transform: translateY(-5px)">NO VALIDADA</ion-button>
-        </ion-card-title>
-        <ion-card-subtitle>
-          Comunidad -> Fabricadas: {{piece.units_manufactured}} | Recibidas: {{piece.units_collected}} | Stock: {{piece.units_manufactured-piece.units_collected}}
-        </ion-card-subtitle>
-        <ion-card-subtitle>
-          <span *ngIf="piece.user===null"><ion-spinner></ion-spinner> Cargando...</span>
-          <span *ngIf="piece.user!==null && piece.user===undefined">Parece que aún no has fabricado ninguna unidad</span>
-          <ng-container *ngIf="piece.user">
-            Tú -> Fabricadas: {{piece.user.units_manufactured}} | Entregadas: {{piece.user.units_collected}} | Stock: {{piece.user.stock}}
-          </ng-container>
-        </ion-card-subtitle>
-      </ion-card-header>
+    <ion-card *ngFor="let piece of dataPieces.data">
+      <div style="display: flex;" [style.cursor]="piece.user!==null?'pointer':'unset'" (click)="piece.user!==null&&clickPiece(piece)">
+        <img [src]="piece.picture||'/assets/icon/favicon.png'" style="max-width: 100px; max-height: 100px; padding: 10px;">
+        <ion-card-header>
+          <ion-card-title>
+            {{piece.name}}
+            <ion-button *ngIf="piece.validated_at" fill="outline" size="small" color="success" style="transform: translateY(-5px)">VALIDADA</ion-button>
+            <ion-button *ngIf="!piece.validated_at" fill="outline" size="small" color="danger" style="transform: translateY(-5px)">NO VALIDADA</ion-button>
+          </ion-card-title>
+          <ion-card-subtitle>
+            Comunidad -> Fabricadas: {{piece.units_manufactured}} | Recibidas: {{piece.units_collected}} | Stock: {{piece.units_manufactured-piece.units_collected}}
+          </ion-card-subtitle>
+          <ion-card-subtitle>
+            <span *ngIf="piece.user===null"><ion-spinner></ion-spinner> Cargando...</span>
+            <span *ngIf="piece.user!==null && piece.user===undefined">Parece que aún no has fabricado ninguna unidad</span>
+            <ng-container *ngIf="piece.user">
+              Tú -> Fabricadas: {{piece.user.units_manufactured}} | Entregadas: {{piece.user.units_collected}} | Stock: {{piece.user.stock}}
+            </ng-container>
+          </ion-card-subtitle>
+        </ion-card-header>
+      </div>
+      <ion-item *ngIf="piece.description">
+        <ion-label>Descripción</ion-label>
+        <ion-button fill="outline" (click)="piece.showDesc=!(piece.showDesc?true:false)">{{piece.showDesc?'OCULTAR':'MOSTRAR'}}</ion-button>
+      </ion-item>
+      <ion-text *ngIf="piece.showDesc" style="display: block;" class="ion-padding" [innerHTML]="piece.description|linkify"></ion-text>
 
       <!-- <ion-card-content *ngIf="data.description">
         {{data.description}}

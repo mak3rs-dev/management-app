@@ -32,26 +32,28 @@
     <ion-list style="margin-bottom: 5px;">
       <ion-list-header><h3>Piezas</h3></ion-list-header>
       <ng-container *ngFor="let piece of data.pieces">
-        <ion-card *ngIf="piece.units!='0'" style="display: flex; margin: 0 0 10px 0;">
-          <img [src]="piece.picture||'/assets/img/placeholder.jpg'" style="max-width: 100px; max-height: 100px; padding: 10px;">
-          <ion-card-header style="width: 100%;">
-            <ion-card-title>
-              {{piece.name}}
-              <ion-button (click)="data.admin && toggleValidation(piece)" *ngIf="piece.validated_at" fill="outline" size="small" color="success" style="transform: translateY(-5px)">VALIDADA</ion-button>
-              <ion-button (click)="data.admin && toggleValidation(piece)" *ngIf="!piece.validated_at" fill="outline" size="small" color="danger" style="transform: translateY(-5px)">NO VALIDADA</ion-button>
-            </ion-card-title>
-            <ion-card-subtitle>
-              <ng-container>
-                Fabricadas: {{piece.units_manufactured}} | Entregadas: {{piece.units_collected}} | Stock: {{piece.stock}}
-              </ng-container>
-              <ion-item>
-                <ion-label *ngIf="data.admin">Cantidad solicitada</ion-label>
-                <ion-label *ngIf="!data.admin">Cantidad entregada</ion-label>
-                <ion-input [name]="'units'+piece.uuid" type="number" [min]="0" [max]="piece.stock" [(ngModel)]="piece.units"></ion-input>
-              </ion-item>
-              <small *ngIf="data.admin">* El maker podrá reemplazar este número al realizar la entrega</small>
-            </ion-card-subtitle>
-          </ion-card-header>
+        <ion-card *ngIf="piece.units!='0'">
+          <div style="display: flex; margin: 0 0 10px 0;">
+            <img [src]="piece.picture||'/assets/img/placeholder.jpg'" style="max-width: 100px; max-height: 100px; padding: 10px;">
+            <ion-card-header style="width: 100%;">
+              <ion-card-title>
+                {{piece.name}}
+                <ion-button (click)="data.admin && toggleValidation(piece)" *ngIf="piece.validated_at" fill="outline" size="small" color="success" style="transform: translateY(-5px)">VALIDADA</ion-button>
+                <ion-button (click)="data.admin && toggleValidation(piece)" *ngIf="!piece.validated_at" fill="outline" size="small" color="danger" style="transform: translateY(-5px)">NO VALIDADA</ion-button>
+              </ion-card-title>
+              <ion-card-subtitle>
+                <ng-container>
+                  Fabricadas: {{piece.units_manufactured}} | Entregadas: {{piece.units_collected}} | Stock: {{piece.stock}}
+                </ng-container>
+              </ion-card-subtitle>
+            </ion-card-header>
+          </div>
+          <ion-item>
+            <ion-label *ngIf="data.admin">Cantidad solicitada</ion-label>
+            <ion-label *ngIf="!data.admin">Cantidad entregada</ion-label>
+            <ion-input [name]="'units'+piece.uuid" type="number" [min]="0" [max]="piece.stock" [(ngModel)]="piece.units"></ion-input>
+          </ion-item>
+          <small style="width: 100%; display: block; padding: 10px;" *ngIf="data.admin">* El maker podrá reemplazar este número al realizar la entrega</small>
         </ion-card>
       </ng-container>
       <ng-container *ngIf="pieceStockAvailable">
@@ -70,29 +72,31 @@
       </ng-container>
     </ion-list>
 
-    <ion-list style="margin-bottom: 5px;">
+    <ion-list style="margin-bottom: 5px;" *ngIf="data && data.materials && materialAvailable">
       <ion-list-header><h3>Materiales</h3></ion-list-header>
       <ng-container *ngFor="let material of data.materials">
-        <ion-card *ngIf="material.units!='0'" style="display: flex; margin: 0 0 10px 0;">
-          <img [src]="material.picture||'/assets/img/placeholder.jpg'" style="max-width: 100px; max-height: 100px; padding: 10px;">
-          <ion-card-header style="width: 100%;">
-            <ion-card-title>
-              {{material.name}}
-            </ion-card-title>
-            <ion-card-subtitle>
-              <ng-container>
-                Solicitadas: {{material.units_request||0}} | Recibidas: {{material.units_delivered||0}} | Pendientes: {{material.units_pending||0}}
-              </ng-container>
-              <ion-item *ngIf="data.admin">
-                <ion-label>Cantidad a entregar</ion-label>
-                <ion-input [name]="'units'+material.uuid" type="number" [min]="0" [max]="material.units_pending" [(ngModel)]="material.units"></ion-input>
-              </ion-item>
-              <ion-item *ngIf="!data.admin">
-                <ion-label>Recibirás {{material.units}} unidad{{(material.units>1)?'es':''}}</ion-label>
-              </ion-item>
-              <small *ngIf="!data.admin">* Si la cantidad que te han entregado no encaja ponte en contacto con algún administrador</small>
-            </ion-card-subtitle>
-          </ion-card-header>
+        <ion-card *ngIf="material.units!='0'">
+          <div style="display: flex; margin: 0 0 10px 0;">
+            <img [src]="material.picture||'/assets/img/placeholder.jpg'" style="max-width: 100px; max-height: 100px; padding: 10px;">
+            <ion-card-header style="width: 100%;">
+              <ion-card-title>
+                {{material.name}}
+              </ion-card-title>
+              <ion-card-subtitle>
+                <ng-container>
+                  Solicitadas: {{material.units_request||0}} | Recibidas: {{material.units_delivered||0}} | Pendientes: {{material.units_pending||0}}
+                </ng-container>
+              </ion-card-subtitle>
+            </ion-card-header>
+          </div>
+          <ion-item *ngIf="data.admin">
+            <ion-label>Cantidad a entregar</ion-label>
+            <ion-input [name]="'units'+material.uuid" type="number" [min]="0" [max]="material.units_pending" [(ngModel)]="material.units"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!data.admin">
+            <ion-label>Recibirás {{material.units}} unidad{{(material.units>1)?'es':''}}</ion-label>
+          </ion-item>
+          <small style="width: 100%; display: block; padding: 10px;" *ngIf="!data.admin">* Si la cantidad que te han entregado no encaja ponte en contacto con algún administrador</small>
         </ion-card>
       </ng-container>
       <ng-container *ngIf="data.admin && materialStockAvailable">
