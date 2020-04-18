@@ -12,9 +12,9 @@ export class EditcollectComponentPage {
 
   data: any = null;
   statuses: any[] = [
-    { code: 'requested', name: 'Recogida solicitada', icon: 'mail-unread-outline'},
-    { code: 'delivered', name: 'Recogida entregada', icon: 'mail-outline'},
-    { code: 'received', name: 'Recogida recibida', icon: 'mail-open-outline'}
+    { code: 'requested', name: 'Solicitada', icon: 'mail-unread-outline'},
+    { code: 'delivered', name: 'Entregada', icon: 'mail-outline'},
+    { code: 'received', name: 'Recibida', icon: 'mail-open-outline'}
   ];
   prettyStatusMap = {requested: 'COLLECT:REQUESTED', delivered: 'COLLECT:DELIVERED', received: 'COLLECT:RECEIVED'};
   loadingPieces: boolean = true;
@@ -39,6 +39,18 @@ export class EditcollectComponentPage {
     if (this.data.materials && this.data.materials.length) {
       this.data.materials.forEach(itm => {
         if (!output && itm.units!=undefined && itm.units_pending!=undefined && itm.units == 0 && itm.units_pending!=0) {
+          output = true;
+        }
+      });
+    }
+
+    return output;
+  };
+  get materialAvailable(): boolean {
+    let output = false;
+    if (this.data.materials && this.data.materials.length) {
+      this.data.materials.forEach(itm => {
+        if (!output && itm.units!=undefined && itm.units_pending!=undefined && itm.units_pending!=0) {
           output = true;
         }
       });
