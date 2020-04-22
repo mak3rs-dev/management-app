@@ -24,6 +24,7 @@ import { ComponentsModule } from './components/components.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { VersionService } from './providers/version.service';
+import { PipesModule } from './pipes/pipes.module';
 
 const PAGES = [ LoginPage, RecoverPage, RegisterPage, DashboardPage, E404Page ];
 
@@ -35,6 +36,7 @@ const PAGES = [ LoginPage, RecoverPage, RegisterPage, DashboardPage, E404Page ];
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
+    PipesModule,
     FormsModule,
     CommunityModule,
     ComponentsModule,
