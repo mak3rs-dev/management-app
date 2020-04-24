@@ -26,16 +26,16 @@ export class ApiService {
   getCommunity = (alias:string) => this.http.get(this.core.env.endpoint+'communities/alias/'+alias, (this.core.isLoggedIn)?{headers:{Authorization: this.core.auth.token}}:{});
   updateCommunity = (data:any) => this.http.put(this.core.env.endpoint+'communities/update', data, {headers:{Authorization: this.core.auth.token}});
   joinCommunity = (uuid:string) => this.http.post(this.core.env.endpoint+'communities/join', {community: uuid}, (this.core.isLoggedIn)?{headers:{Authorization: this.core.auth.token}}:{});
-  getCommunityRanking = (alias:string, page:number=1, piece=null) => this.http.get(this.core.env.endpoint+'communities/ranking/'+alias+'?page='+page+(piece?'&piece='+piece:''), {headers:{Authorization: this.core.auth.token}});
-  getCommunityStock = (alias:string, page:number=1, piece=null) => this.http.get(this.core.env.endpoint+'communities/ranking/'+alias+'/stock?page='+page+(piece?'&piece='+piece:''), {headers:{Authorization: this.core.auth.token}});
+  getCommunityRanking = (alias:string, page:number=1, piece=null, mak3r_num=null) => this.http.post(this.core.env.endpoint+'communities/ranking/'+alias+'?page='+page+(piece?'&piece='+piece:''), {mak3r_num: mak3r_num}, {headers:{Authorization: this.core.auth.token}});
+  getCommunityStock = (alias:string, page:number=1, piece=null, mak3r_num=null) => this.http.post(this.core.env.endpoint+'communities/ranking/'+alias+'/stock?page='+page+(piece?'&piece='+piece:''), {mak3r_num: mak3r_num}, {headers:{Authorization: this.core.auth.token}});
   getCommunityPieces = (uuid:string, type:null|'piece'|'material'='piece', page:number=1) => this.http.get(this.core.env.endpoint+'pieces/all?community='+uuid+'&type_piece='+type+'&page='+page, {headers:{Authorization: this.core.auth.token}});
 
   // COLLECT CONTROL
   addCollectControl = (data:any) => this.http.post(this.core.env.endpoint+'communities/collect/add', data, {headers:{Authorization: this.core.auth.token}});
   updateCollectControl = (data:any) => this.http.put(this.core.env.endpoint+'communities/collect/update', data, {headers:{Authorization: this.core.auth.token}});
-  getCollectControl = (alias:string, uuid_user:string=null, status:string=null, page:string|number=1) => this.http.get(this.core.env.endpoint+'communities/collect/'+alias+'?user='+(uuid_user||'')+'&status_code='+(status||'')+'&page='+page, {headers:{Authorization: this.core.auth.token}});
+  getCollectControl = (alias:string, uuid_user:string=null, status:string=null, page:string|number=1, mak3r_num=null) => this.http.post(this.core.env.endpoint+'communities/collect/'+alias+'?user='+(uuid_user||'')+'&status_code='+(status||'')+'&page='+page, {mak3r_num: mak3r_num}, {headers:{Authorization: this.core.auth.token}});
   // deleteCollectControl = (uuid:string|number) => this.http.delete(this.core.env.endpoint+'communities/collect/update?uuid=', {headers:{Authorization: this.core.auth.token}});
-  getCollectControlCsv = (alias:string, uuid_user:string=null, status:string=null) => this.http.get(this.core.env.endpoint+'communities/collect/'+alias+'/export?user='+(uuid_user||'')+'&status_code='+(status||''), {
+  getCollectControlCsv = (alias:string, uuid_user:string=null, status:string=null, mak3r_num=null) => this.http.post(this.core.env.endpoint+'communities/collect/'+alias+'/export?user='+(uuid_user||'')+'&status_code='+(status||''), {mak3r_num:mak3r_num}, {
     responseType: 'blob' as 'json',
     headers: {Authorization: this.core.auth.token}
   }).toPromise();
@@ -43,11 +43,12 @@ export class ApiService {
   // USER
   getCommunityPiecesByUser = (uuid:string, page:number=1, user:string='') => this.http.get(this.core.env.endpoint+'pieces/all?type_piece=piece&community='+uuid+'&page='+page+'&user='+user, {headers:{Authorization: this.core.auth.token}});
   getCommunitiesByUser = (page:number=1) => this.http.get(this.core.env.endpoint+'users/communities?page='+page, {headers:{Authorization: this.core.auth.token}});
-  getRankingByUserPiece = (alias:string, user:string, piece:string) => this.http.get(this.core.env.endpoint+'communities/ranking/'+alias+(piece?'?piece='+piece:'')+(user?'&user='+user:''), {headers:{Authorization: this.core.auth.token}});
+  getRankingByUserPiece = (alias:string, user:string, piece:string) => this.http.post(this.core.env.endpoint+'communities/ranking/'+alias+(piece?'?piece='+piece:'')+(user?'&user='+user:''), null, {headers:{Authorization: this.core.auth.token}});
   putNewPieceUnits = (uuid_community:string, uuid_piece:string, units:number) => this.http.post(this.core.env.endpoint+'communities/piece/add-or-update', {uuid_community: uuid_community,uuid_piece: uuid_piece,units: units}, {headers:{Authorization: this.core.auth.token}});
   putNewMaterialUnits = (uuid_community:string, uuid_piece:string, units:number) => this.http.post(this.core.env.endpoint+'communities/materials/add-or-update', {uuid_community: uuid_community,uuid_piece: uuid_piece,units: units}, {headers:{Authorization: this.core.auth.token}});
   getMaterialUnits = (alias:string, uuid_piece:string, user:string='') => this.http.get(this.core.env.endpoint+'communities/materials/'+alias+'?piece='+uuid_piece+'&user='+user, {headers:{Authorization: this.core.auth.token}});
   confirmPrivacyPolicy = () => this.http.patch(this.core.env.endpoint+'auth/policy', null, {headers:{Authorization: this.core.auth.token}});
   setPieceValidation = (user_uuid:string, piece_uuid:string, validate:boolean) => this.http.patch(this.core.env.endpoint+'pieces/validate', {user:user_uuid, piece:piece_uuid, validate:validate}, {headers:{Authorization: this.core.auth.token}});
+  findMak3r = (alias:string, q?:string, mk_num?:string|number) => this.http.get(this.core.env.endpoint+'communities/'+alias+'/users?'+(q?'q='+q:'')+(mk_num?'mak3r_num='+mk_num:''), {headers:{Authorization: this.core.auth.token}});
 
 }

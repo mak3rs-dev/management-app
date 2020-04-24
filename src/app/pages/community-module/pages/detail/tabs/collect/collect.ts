@@ -1,7 +1,7 @@
+import { FiltersComponentPage } from 'src/app/pages/community-module/components/filters/filters';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CoreService } from 'src/app/providers/core.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { DetailPage } from '../../detail.page';
 import { EditcollectComponentPage } from 'src/app/pages/community-module/components/editcollect/editcollect';
 
@@ -18,6 +18,7 @@ export class CollectPage {
     return (this.core.auth.user&&this.core.auth.user.role_name=='USER:ADMIN')||DetailPage.isMakerAdmin||false;
   }
   data: any = null;
+  filterConfig: any = {mak3r: []};
   query: 'COLLECT:REQUESTED'|'COLLECT:DELIVERED'|'COLLECT:RECEIVED' = null;
   queries: any[] = [
     { code: 'requested', name: 'Recogidas solicitadas', icon: 'mail-unread-outline'},
@@ -26,8 +27,6 @@ export class CollectPage {
   ];
   prettyStatusMap: any = {requested: 'COLLECT:REQUESTED',delivered: 'COLLECT:DELIVERED',received: 'COLLECT:RECEIVED'};
   loadingMore: boolean = false;
-  // showAddresses: boolean = false;
-  // communityAlias: string = null;
 
   constructor(
     public core: CoreService,
@@ -52,7 +51,7 @@ export class CollectPage {
     const doWork = (loading=null) => {
       if (page==null) page = (this.data==null) ? 1:this.data.current_page;
       if (page==1) this.data = null;
-      this.core.api.getCollectControl(DetailPage.data.alias, null, this.query, page).subscribe(Res => {
+      this.core.api.getCollectControl(DetailPage.data.alias, null, this.query, page, this.getMak3rFilter()).subscribe(Res => {
         this.data = Res;
         if (loading) loading.dismiss();
         if (event != null) event.target.complete();
@@ -65,6 +64,25 @@ export class CollectPage {
 
     if (!event) this.core.createLoading().then(loading => doWork(loading));
     else doWork();
+  }
+
+  filter = () => FiltersComponentPage.Open({
+    bypieces:false, bymak3r: true,
+    community:DetailPage.data.uuid,
+    community_alias:DetailPage.data.alias,
+    data:this.filterConfig
+  },this.core, d=>{
+    if (d.data) {
+      this.filterConfig=d.data;
+      this.refresh();
+    }
+  });
+
+  private getMak3rFilter() {
+    if (!this.filterConfig.mak3r || !this.filterConfig.mak3r.length) return null;
+    let list = [];
+    this.filterConfig.mak3r.forEach(itm => list.push(itm.mak3r_num));
+    return list;
   }
 
   loadMore() { // Won't be used in future
@@ -118,7 +136,7 @@ export class CollectPage {
   }
 
   csvExport() {
-    this.core.api.getCollectControlCsv(DetailPage.data.alias, null, this.query).then((file:any) => {
+    this.core.api.getCollectControlCsv(DetailPage.data.alias, null, this.query, this.getMak3rFilter()).then((file:any) => {
       const blob = new Blob([
         new Uint8Array([0xEF, 0xBB, 0xBF]), file
       ], { type: 'text/plain' });

@@ -5,8 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { UpdateStockComponentPage } from './updatestock/updatestock';
 import { EditcollectComponentPage } from './editcollect/editcollect';
 import { FiltersComponentPage } from './filters/filters';
+import { IonicSelectableModule } from 'ionic-selectable';
+import { Mak3rSelectComponentPage } from './mak3r-select/mak3r-select';
 
 const COMPONENTS = [
+	Mak3rSelectComponentPage,
 	UpdateStockComponentPage,
 	EditcollectComponentPage,
 	FiltersComponentPage
@@ -17,6 +20,7 @@ const COMPONENTS = [
 	imports: [
 		IonicModule,
 		CommonModule,
+		IonicSelectableModule,
 		FormsModule,
 	],
 	entryComponents: [...COMPONENTS],
