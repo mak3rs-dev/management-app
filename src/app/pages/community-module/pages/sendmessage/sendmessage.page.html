@@ -1,0 +1,17 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Enviar mensaje</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item>
+    <ion-label>Seleccione mak3rs</ion-label>
+    <cmtp-mak3r-select [(selectedItems)]="data.targets" [config]="{multiple:true, community_alias: community_alias}" ></cmtp-mak3r-select>
+  </ion-item>
+
+</ion-content>

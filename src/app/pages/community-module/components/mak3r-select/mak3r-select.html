@@ -1,0 +1,4 @@
+<ionic-selectable item-content [(ngModel)]="selectedItems" [isMultiple]="viewConfig.multiple" itemValueField="uuid" itemTextField="name"
+  [canSearch]="true" (onSearch)="searchMak3rs($event)" [searchFailText]="'No se encontraron elementos, o no has escrito nada y si no me dices lo que buscas complicado lo tengo...'"
+  [searchPlaceholder]="'Buscar'" [closeButtonText]="'Cancelar'" [confirmButtonText]="'Aceptar'">
+</ionic-selectable>

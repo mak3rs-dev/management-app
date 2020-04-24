@@ -22,6 +22,7 @@ export class FiltersComponentPage {
 
   reset() {
     if (this.config.bypieces) this.data.piece = '';
+    if (this.config.bymak3r) this.data.mak3r = [];
   }
 
   loadPieces(cb: Function = null, page=1, autoAddUnits=null) {
@@ -42,6 +43,7 @@ export class FiltersComponentPage {
 
   save() {
     if (this.config.bypieces && this.data.piece==undefined) this.data.piece = null;
+    if (this.config.bymak3r && this.data.mak3r==undefined) this.data.mak3r = [];
     this.dismiss(this.data);
   };
 

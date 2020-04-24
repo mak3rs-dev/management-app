@@ -20,12 +20,11 @@ export class RankingPage {
     return (this.core.auth.user&&this.core.auth.user.role_name=='USER:ADMIN')||DetailPage.isMakerAdmin||false;
   }
   data: any = null;
-  filterConfig: any = {piece:null};
+  filterConfig: any = {piece:null, mak3r: []};
   query: 'ranking'|'stock' = 'ranking';
   showEntriesWithActiveCollects: boolean = true;
   showAddresses: boolean = false;
   loadingMore: boolean = false;
-  communityAlias: string = null;
 
   constructor(
     public core: CoreService,
@@ -37,13 +36,12 @@ export class RankingPage {
   ionViewDidEnter(): void {
     this.query = <'ranking'|'stock'>this.activatedRoute.snapshot.routeConfig.path;
     if (this.query=='stock') this.showAddresses = true;
-    this.communityAlias = DetailPage.data.alias;
     this.refresh();
   }
 
   private getQueryFunc(page=1): Observable<Object> {
     const query = (this.query=='ranking')?this.core.api.getCommunityRanking:this.core.api.getCommunityStock;
-    return query(this.communityAlias, page, this.filterConfig.piece);
+    return query(DetailPage.data.alias, page, this.filterConfig.piece, this.getMak3rFilter());
   }
 
   public refresh(event=null) {
@@ -78,12 +76,15 @@ export class RankingPage {
   }
 
   filter = () => FiltersComponentPage.Open({
-    bypieces:true,
+    bypieces:true, bymak3r: this.adminPermission,
     community:DetailPage.data.uuid,
+    community_alias:DetailPage.data.alias,
     data:this.filterConfig
   },this.core, d=>{
-    this.filterConfig=d.data;
-    this.refresh();
+    if (d.data) {
+      this.filterConfig=d.data;
+      this.refresh();
+    }
   });
 
   createCollect = (user) => EditcollectComponentPage.Open({
@@ -93,6 +94,7 @@ export class RankingPage {
     community_alias: DetailPage.data.alias,
     user: user.user_uuid,
     user_name: user.user_name,
+    mak3r_num: user.mak3r_num,
     status_code: "COLLECT:REQUESTED",
 
     address: user.user_address,
@@ -107,8 +109,18 @@ export class RankingPage {
     materials: []
   }, this.core);
 
+  private getMak3rFilter() {
+    if (!this.filterConfig.mak3r || !this.filterConfig.mak3r.length) return null;
+    let list = [];
+    this.filterConfig.mak3r.forEach(itm => list.push(itm.mak3r_num));
+    return list;
+  }
+
   csvExport() {
-    this.http.get<Blob>(this.core.env.endpoint+'communities/ranking/'+this.communityAlias+'/export', {
+    this.http.post<Blob>(this.core.env.endpoint+'communities/ranking/'+DetailPage.data.alias+'/export', {
+      piece: this.filterConfig.piece,
+      mak3r_num: this.getMak3rFilter()
+    }, {
       responseType: 'blob' as 'json',
       headers:{Authorization: this.core.auth.token}
     }).toPromise().then(file => {

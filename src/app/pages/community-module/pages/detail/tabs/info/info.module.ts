@@ -5,10 +5,12 @@ import { NgModule } from '@angular/core';
 
 import { InfoPage } from './info';
 import { PipesModule } from './../../../../../../pipes/pipes.module';
+import { DetailRoutingModule } from '../../detail-routing.module';
 
 @NgModule({
   declarations: [InfoPage],
   imports: [
+    DetailRoutingModule,
     CommonModule,
     FormsModule,
     IonicModule,

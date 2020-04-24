@@ -10,8 +10,8 @@
   </ion-item>
 
   <ion-list *ngIf="data" style="text-align: center;">
-    <ng-container *ngFor="let user of data.data; let i=index;" [style.cursor]="query=='stock'?'pointer':''">
-      <ion-item *ngIf="!(!showEntriesWithActiveCollects && user.num_active_collects)" (click)="(query=='stock')?createCollect(user):true">
+    <ng-container *ngFor="let user of data.data; let i=index;">
+      <ion-item *ngIf="!(!showEntriesWithActiveCollects && user.num_active_collects)" [style.cursor]="(query=='stock'?'pointer':'')" (click)="(query=='stock')?createCollect(user):true">
         <ion-avatar slot="start" style="font-size: 2em; min-width: 54px; text-align: center;" [class.elegible]="user.stock>=10">
           {{i+1}}
         </ion-avatar>
@@ -33,13 +33,11 @@
     </ion-button>
   </ion-list>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="adminPermission && query=='stock'">
-    <ion-fab-button (click)="filter()">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="filter()" style="margin-bottom: 10px;">
       <ion-icon name="funnel-outline"></ion-icon>
     </ion-fab-button>
-  </ion-fab>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="adminPermission && query=='ranking'">
-    <ion-fab-button (click)="csvExport()">
+    <ion-fab-button (click)="csvExport()" *ngIf="adminPermission && query=='ranking'">
       <ion-icon name="save-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>

@@ -22,8 +22,10 @@ import { E404Page } from './pages/404/404.page';
 import { RecoverPage } from './pages/recover/recover.page';
 import { ComponentsModule } from './components/components.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { IonicSelectableModule } from 'ionic-selectable';
 import { environment } from '../environments/environment';
 import { VersionService } from './providers/version.service';
+import { PipesModule } from './pipes/pipes.module';
 
 const PAGES = [ LoginPage, RecoverPage, RegisterPage, DashboardPage, E404Page ];
 
@@ -35,6 +37,8 @@ const PAGES = [ LoginPage, RecoverPage, RegisterPage, DashboardPage, E404Page ];
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
+    IonicSelectableModule,
+    PipesModule,
     FormsModule,
     CommunityModule,
     ComponentsModule,

@@ -16,6 +16,17 @@
             </ion-label>
           </ion-item>
 
+          <ng-container *ngIf="core.isLoggedIn && core.auth.user">
+            <ion-item color="primary" style="margin-bottom: 10px;">
+              <ion-icon slot="start" color="white" name="person-circle-outline"></ion-icon>
+              <ion-label text-wrap color="white" style="font-weight: bold;">
+                {{core.auth.user.name}}
+              </ion-label>
+            </ion-item>
+
+            <hr/>
+          </ng-container>
+
           <ng-container *ngFor="let p of appPages">
             <ion-menu-toggle auto-hide="false" *ngIf="p.requireLogin ? core.isLoggedIn:true">
               <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">

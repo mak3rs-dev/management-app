@@ -62,6 +62,7 @@ export class EditcollectComponentPage {
     let output = false;
     if (this.data.materials && this.data.materials.length) {
       this.data.materials.forEach(itm => {
+        if (!output && itm.units!=0) output = true;
         if (!output && itm.units!=undefined && itm.units_pending!=undefined && itm.units_pending!=0) {
           output = true;
         }

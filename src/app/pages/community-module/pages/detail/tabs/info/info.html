@@ -1,11 +1,14 @@
 <ion-content class="ion-padding">
 
   <ion-fab vertical="top" horizontal="end" slot="fixed" *ngIf="editPermission">
-    <ion-fab-button *ngIf="!editMode" (click)="editMode = true">
+    <ion-fab-button *ngIf="!editMode" (click)="editMode = true" title="Editar la información de la comunidad">
       <ion-icon name="create-outline"></ion-icon>
     </ion-fab-button>
     <ion-fab-button *ngIf="editMode" (click)="putCommunity()">
       <ion-icon name="checkmark-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button *ngIf="false" color="secondary" [routerLink]="'/community/'+data.alias+'/message'" style="margin-top: 10px;" title="Enviar notificaciones a los usuarios">
+      <ion-icon name="send-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 

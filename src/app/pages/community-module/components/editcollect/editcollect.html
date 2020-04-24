@@ -91,7 +91,7 @@
           </div>
           <ion-item *ngIf="data.admin">
             <ion-label>Cantidad a entregar</ion-label>
-            <ion-input [name]="'units'+material.uuid" type="number" [min]="0" [max]="material.units_pending" [(ngModel)]="material.units"></ion-input>
+            <ion-input [name]="'units'+material.uuid" type="number" [min]="0" [max]="(data.id)?100:material.units_pending" [(ngModel)]="material.units"></ion-input>
           </ion-item>
           <ion-item *ngIf="!data.admin">
             <ion-label>Recibirás {{material.units}} unidad{{(material.units>1)?'es':''}}</ion-label>

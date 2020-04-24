@@ -35,4 +35,12 @@
       </ion-item> -->
     </ion-list>
   </ng-container>
+
+  <ng-container *ngIf="config.bymak3r">
+    <h2>Filtrar por pieza</h2>
+    <ion-item>
+      <ion-label>Seleccione los mak3rs a filtrar</ion-label>
+      <cmtp-mak3r-select [(selectedItems)]="data['mak3r']" [config]="{multiple: true, community_alias: config.community_alias}"></cmtp-mak3r-select>
+    </ion-item>
+  </ng-container>
 </ion-content>
