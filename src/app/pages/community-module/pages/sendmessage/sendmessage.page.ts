@@ -11,18 +11,47 @@ import { ActivatedRoute } from '@angular/router';
 export class SendMessagePage {
 
   community_alias: string = null;
+  community_data: any = null;
   data: {community:string, users: any[], message: string} = {
     community: '',
     users: [],
     message: ''
   };
 
+  get adminPermission(): boolean {
+    return (this.core.auth.user && this.core.auth.user.role_name=='USER:ADMIN') || (this.community_data && this.community_data.admin) || false;
+  }
+
   constructor(public core: CoreService, route: ActivatedRoute) {
     if (!this.core.isLoggedIn) {
-      this.core.navCtrl.navigateRoot('/');
+      this.core.navCtrl.navigateRoot('/community');
     }
     
     this.community_alias = route.snapshot.params.alias;
+  }
+
+  ionViewDidEnter() {
+    this.refresh(() => {
+      if (!this.adminPermission) {
+        this.core.navCtrl.navigateRoot('/community');
+      }
+    });
+  }
+
+  refresh(cb: Function=null) {
+    this.core.createLoading().then(loading => {
+      let handleErr = () => this.core.errorToast(loading, 'La comunidad seleccionada no es válida').then(()=> {
+        if (cb) cb(false);
+      });
+
+      if (this.community_alias) {
+        this.core.api.getCommunity(this.community_alias).subscribe(Res => {
+          this.community_data = Res;
+          loading.dismiss();
+          if (cb) cb(true);
+        }, handleErr);
+      } else handleErr();
+    });
   }
 
   submitForm(from: any) {
