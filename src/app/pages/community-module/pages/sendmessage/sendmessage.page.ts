@@ -19,7 +19,7 @@ export class SendMessagePage {
   };
 
   get adminPermission(): boolean {
-    return (this.core.auth.user && this.core.auth.user.role_name=='USER:ADMIN') || (this.community_data && this.community_data.admin) || false;
+    return (this.core.auth.user && this.core.auth.user.role_name=='USER:ADMIN') || (this.community_data && this.community_data.user_admin) || false;
   }
 
   constructor(public core: CoreService, route: ActivatedRoute) {
