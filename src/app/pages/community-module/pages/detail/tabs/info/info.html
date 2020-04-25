@@ -7,7 +7,7 @@
     <ion-fab-button *ngIf="editMode" (click)="putCommunity()">
       <ion-icon name="checkmark-outline"></ion-icon>
     </ion-fab-button>
-    <ion-fab-button *ngIf="false" color="secondary" [routerLink]="'/community/'+data.alias+'/message'" style="margin-top: 10px;" title="Enviar notificaciones a los usuarios">
+    <ion-fab-button color="secondary" [routerLink]="'/community/'+data.alias+'/message'" style="margin-top: 10px;" title="Enviar notificaciones a los usuarios">
       <ion-icon name="send-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>

@@ -9,9 +9,25 @@
 
 <ion-content>
 
-  <ion-item>
-    <ion-label>Seleccione mak3rs</ion-label>
-    <cmtp-mak3r-select [(selectedItems)]="data.targets" [config]="{multiple:true, community_alias: community_alias}" ></cmtp-mak3r-select>
-  </ion-item>
+  <form #sendMessage="ngForm"  class="ion-padding" (submit)="submitForm(sendMessage)">
+    <ion-card>
+      <ion-item>
+        <ion-label>Seleccione mak3rs</ion-label>
+        <cmtp-mak3r-select [(selectedItems)]="data.users" [config]="{multiple:true, community_alias: community_alias}" ></cmtp-mak3r-select>
+      </ion-item>
+    </ion-card>
+  
+    <ion-card>
+      <!-- Textarea in an item with a floating label -->
+      <ion-item>
+        <ion-label position="floating">Indica el mensaje a enviar:</ion-label>
+        <ion-textarea [(ngModel)]="data.message" name="text" [required]="true" maxLength="4096" autocorrect="on"></ion-textarea>
+      </ion-item>
+    </ion-card>
+  
+    <ion-card>
+      <ion-button expand="block" type="submit" class="ion-no-margin">Enviar notificación</ion-button>
+    </ion-card>
+  </form>
 
 </ion-content>
