@@ -51,4 +51,6 @@ export class ApiService {
   setPieceValidation = (user_uuid:string, piece_uuid:string, validate:boolean) => this.http.patch(this.core.env.endpoint+'pieces/validate', {user:user_uuid, piece:piece_uuid, validate:validate}, {headers:{Authorization: this.core.auth.token}});
   findMak3r = (alias:string, q?:string, mk_num?:string|number) => this.http.get(this.core.env.endpoint+'communities/'+alias+'/users?'+(q?'q='+q:'')+(mk_num?'mak3r_num='+mk_num:''), {headers:{Authorization: this.core.auth.token}});
 
+  // TELEGRAM
+  sendMessage = (data:any) => this.http.post(this.core.env.endpoint+'telegram/sendmessage', data, {headers:{Authorization: this.core.auth.token}});
 }
